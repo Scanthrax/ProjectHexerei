@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tile
 {
     public enum Type { Empty, Full}
-    Type type;
+    public Type type { get; private set; }
 
     public int x { get; private set; }
     public int y { get; private set; }

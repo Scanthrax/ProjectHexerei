@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class World : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class World : MonoBehaviour
     public Chunk chunkGO;
 
     // the range of the chunk loading
-    public int LoadRange = 2;
+    public int LoadRange = 4;
 
 
-    Vector2 prevPos, curPos, transPos;
+    Vector2 previousPos, currentPos, transitionPos;
 
+    public bool generateChunks = false;
 
     private void Awake()
     {
@@ -26,40 +28,37 @@ public class World : MonoBehaviour
 
     private void Start()
     {
-        prevPos = transform.position;
-        curPos = prevPos;
+        previousPos = transform.position;
+        currentPos = previousPos;
+
+        FindChunksToLoad();
+
     }
 
     private void Update()
     {
-        // constantly check for which chunks to load
-        FindChunksToLoad();
 
         // record our previous position so we can compare it to our current position
-        prevPos = curPos;
-        curPos = transform.position;
-        transPos = RoundNum(curPos);
+        previousPos = currentPos;
+        currentPos = transform.position;
+        transitionPos = RoundTo10(currentPos);
 
-        if(prevPos.x < transPos.x && curPos.x > transPos.x)
+        #region detect when we cross a transition line
+        if(
+            (previousPos.x < transitionPos.x && currentPos.x > transitionPos.x) ||
+            (previousPos.x > transitionPos.x && currentPos.x < transitionPos.x) ||
+            (previousPos.y < transitionPos.y && currentPos.y > transitionPos.y) ||
+            (previousPos.y > transitionPos.y && currentPos.y < transitionPos.y))
         {
-            print("crossed transition!");
-            transPos.x += 10;
+            generateChunks = true;
         }
-        else if (prevPos.x > transPos.x && curPos.x < transPos.x)
-        {
-            print("crossed transition!");
-            transPos.x -= 10;
-        }
+        #endregion
 
-        if (prevPos.y < transPos.y && curPos.y > transPos.y)
+        if(generateChunks)
         {
-            print("crossed transition!");
-            transPos.y += 10;
-        }
-        else if (prevPos.y > transPos.y && curPos.y < transPos.y)
-        {
-            print("crossed transition!");
-            transPos.y -= 10;
+            FindChunksToLoad();
+            DeleteChunks();
+            generateChunks = false;
         }
 
     }
@@ -71,8 +70,8 @@ public class World : MonoBehaviour
     /// <param name="y"></param>
     void MakeChunkAt(int x, int y)
     {
-        x = RoundNum((x / Chunk.size) * Chunk.size);
-        y = RoundNum((y / Chunk.size) * Chunk.size);
+        x += 5;
+        y += 5;
 
         if(!chunkMap.ContainsKey(new Vector2(x,y)))
         {
@@ -81,41 +80,54 @@ public class World : MonoBehaviour
         }
     }
 
-    void DeleteChunkAt(int x, int y)
+    void DeleteChunks()
     {
+        List<Chunk> deleteChunks = new List<Chunk>(chunkMap.Values);
 
+            var xy = from kvp in deleteChunks where Vector2.Distance(transform.position, kvp.transform.position) > LoadRange * Chunk.size select kvp;
+            foreach (var item in xy)
+            {
+                chunkMap.Remove(item.transform.position);
+                Destroy(item.gameObject);
+            }
     }
 
     void FindChunksToLoad()
     {
-        var xPos = transform.position.x+5;
-        var yPos = transform.position.y+5;
+        var xPos = Mathf.RoundToInt(transform.position.x);
+        var yPos = Mathf.RoundToInt(transform.position.y);
 
-        for (int i =  RoundNum(xPos - (LoadRange * Chunk.size)); i < RoundNum(xPos + (LoadRange * Chunk.size)); i += Chunk.size)
+        for (int i =  RoundTo10(xPos - (LoadRange * Chunk.size)); i < RoundTo10(xPos + (LoadRange * Chunk.size)); i += Chunk.size)
         {
-            for (int j = RoundNum(yPos - (LoadRange * Chunk.size)); j < RoundNum(yPos + (LoadRange * Chunk.size)); j += Chunk.size)
+            for (int j = RoundTo10(yPos - (LoadRange * Chunk.size)); j < RoundTo10(yPos + (LoadRange * Chunk.size)); j += Chunk.size)
             {
                 MakeChunkAt(i,j);
+                print("X: " + i + "   Y: " + j);
             }
         }
     }
 
 
 
-    int RoundNum(int num)
+    int RoundTo10(int num)
     {
         int rem = num % 10;
         return rem >= 5 ? (num - rem + 10) : (num - rem);
     }
 
-    int RoundNum(float num)
+    int RoundTo10(float num)
     {
         int temp = Mathf.RoundToInt(num);
         int rem = temp % 10;
         return rem >= 5 ? (temp - rem + 10) : (temp - rem);
     }
 
-    Vector2 RoundNum(Vector2 num)
+    /// <summary>
+    /// Round the values to the nearest multiple of 10
+    /// </summary>
+    /// <param name="num"></param>
+    /// <returns></returns>
+    Vector2 RoundTo10(Vector2 num)
     {
         int tempX = Mathf.RoundToInt(num.x);
         int tempY = Mathf.RoundToInt(num.y);
@@ -123,7 +135,9 @@ public class World : MonoBehaviour
         int remX = tempX % 10;
         int remY = tempY % 10;
 
-        return new Vector2(remX >= 5 ? (tempX - remX + 10) : (tempX - remX), remY >= 5 ? (tempY - remY + 10) : (tempY - remY));
+        return new Vector2(
+            remX >= 5 ? (tempX - remX + 10) : (tempX - remX),
+            remY >= 5 ? (tempY - remY + 10) : (tempY - remY));
     }
 
 }
