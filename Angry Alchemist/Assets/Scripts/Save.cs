@@ -9,8 +9,8 @@ using System;
 [Serializable]
 public class Save
 {
-    //[SerializeField]
-    //public Dictionary<Vector2, Chunk> chunkMap;
+    [SerializeField]
+    public Dictionary<Position, Chunk> chunkMap;
 
     [SerializeField]
     public Position playerPosition;
@@ -22,13 +22,23 @@ public class Save
 [Serializable]
 public struct Position
 {
-    public float x;
-    public float y;
+    public int x;
+    public int y;
 
     public Position(Transform obj)
     {
-        x = obj.position.x;
-        y = obj.position.y;
+        x = Mathf.RoundToInt(obj.position.x);
+        y = Mathf.RoundToInt(obj.position.y);
+    }
+    public Position(float x, float y)
+    {
+        this.x = Mathf.RoundToInt(x);
+        this.y = Mathf.RoundToInt(y);
+    }
+    public Position(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
     }
 
     public Vector2 GetPosition()

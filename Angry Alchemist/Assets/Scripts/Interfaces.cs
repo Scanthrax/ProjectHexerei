@@ -1,11 +1,13 @@
-﻿public interface IDamageable
+﻿using UnityEngine;
+
+public interface IDamageable
 {
     void DealDamage();
 }
 
 interface ISuckable
 {
-    void Suck();
+    void Suck(Vector2 pos, float power);
 }
 
 public class Interfaces

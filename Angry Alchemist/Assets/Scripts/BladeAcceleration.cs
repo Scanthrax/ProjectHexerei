@@ -27,6 +27,10 @@ public enum Gear
     /// </summary>
     Second,
     /// <summary>
+    /// Third gear
+    /// </summary>
+    Third,
+    /// <summary>
     /// Max gear; the blade is at full speed
     /// </summary>
     Max
@@ -70,7 +74,15 @@ public class BladeAcceleration : MonoBehaviour
 
     public GameObject Blade;
 
-    float stoppingPoint;
+
+    public AnimationCurve animCurve;
+    public float animInterp;
+
+    public CircleCollider2D cc;
+
+
+    public float tickTimer, tickTime;
+
 
     void Start()
     {
@@ -84,51 +96,54 @@ public class BladeAcceleration : MonoBehaviour
         // initialize the timer
         shiftTimer = 0f;
 
+
+        cc = GetComponent<CircleCollider2D>();
+
     }
 
     void Update()
     {
+        
+
+
         #region Right Mouse Release Release
-        if(Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1))
         {
-            stoppingPoint = shiftTimer;
             upshifting = false;
         }
         #endregion
-
-        var temp = downshiftTime * ((stoppingPoint / (upshiftTime * 2)));
-
+        
         #region Right Mouse Hold
         if (Input.GetMouseButton(1))
         {
             upshifting = true;
-            shiftTimer = Mathf.Min(shiftTimer += Time.fixedDeltaTime, upshiftTime * 2f);
+            
         }
         #endregion
         #region Right Mouse Up
         else
         {
-            
-            shiftTimer = Mathf.Max(shiftTimer -= Time.fixedDeltaTime / temp, 0f);
             upshifting = false;
         }
         #endregion
 
-        #region Determine our current gear
-        if (shiftTimer > 0f && shiftTimer < upshiftTime)
-            currentGear = Gear.First;
-        else if (shiftTimer >= upshiftTime && shiftTimer < upshiftTime * 2f)
-            currentGear = Gear.Second;
-        else if (shiftTimer >= upshiftTime * 2f)
-            currentGear = Gear.Max;
-        else if (shiftTimer <= 0f)
-            currentGear = Gear.Zero;
+        shiftTimer = Mathf.Clamp(
+            shiftTimer += upshifting? Time.deltaTime / (upshiftTime * 3): -Time.deltaTime /(downshiftTime * 3),
+            0f,upshiftTime * 3);
+
+        animInterp = animCurve.Evaluate(shiftTimer);
+
+        if (tickTimer >= tickTime)
+        {
+            print("tick!");
+            tickTimer -= tickTime;
+        }
         else
         {
-            currentGear = Gear.Null;
-            print("Current Gear is at a null value!");
+            tickTimer += (Time.deltaTime * animInterp);
         }
-        #endregion
+
+
 
         //switch(gear)
         //{
@@ -144,26 +159,9 @@ public class BladeAcceleration : MonoBehaviour
         //        break;
         //}
 
-        // use the switch statement to change the blade speed upon shifting gears
-        switch (ShiftGear())
-        {
-            case Gear.Zero:
-                bladeSpeed = 0;
-                break;
-            case Gear.First:
-                bladeSpeed = maxSpeed * (0.4f);
-                break;
-            case Gear.Second:
-                bladeSpeed = maxSpeed * (0.75f);
-                break;
-            case Gear.Max:
-                bladeSpeed = maxSpeed;
-                break;
-            default:
-                break;
-        }
 
 
+        bladeSpeed = animInterp * 30f;
 
         // rotate the blade
         Blade.transform.Rotate(0, 0,-bladeSpeed);

@@ -2,35 +2,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SpriteType { Ground, Grass, Rock, Tree}
+
+
 public class SpriteManager : MonoBehaviour
 {
     public static SpriteManager instance;
 
-    Dictionary<string, Sprite> tileSprites;
+    public List<EnumToSprite> enumToSprite;
 
-    public List<Sprite> sprites;
+
+
+    Dictionary<SpriteType, Sprite> tileSprites;
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
 
-        tileSprites = new Dictionary<string, Sprite>();
 
-        foreach (var item in sprites)
+        tileSprites = new Dictionary<SpriteType, Sprite>();
+
+        foreach (var item in enumToSprite)
         {
-            tileSprites.Add(item.name, item);
+            tileSprites.Add(item.type, item.sprite);
         }
 
     }
 
-    public Sprite GetSprite(Tile tile)
+    public Sprite GetSprite(SpriteType type)
     {
-        if(!tileSprites.ContainsKey(tile.type.ToString()))
+        if(tileSprites.ContainsKey(type))
         {
-            print("The sprite could not be found in the dictionary: " + tile.type.ToString());
+            return tileSprites[type];
+        }
+        else
+        {
+            print("The type " + type.ToString() + " isn't in the dictionary!");
             return null;
         }
-
-        return tileSprites[tile.type.ToString()];
     }
+}
+
+[System.Serializable]
+public struct EnumToSprite
+{
+    public SpriteType type;
+    public Sprite sprite;
 }

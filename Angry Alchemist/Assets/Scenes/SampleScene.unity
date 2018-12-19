@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 11
+    serializedVersion: 12
     m_Resolution: 2
     m_BakeResolution: 40
     m_AtlasSize: 1024
@@ -77,6 +77,8 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 512
     m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 512
+    m_PVREnvironmentReferencePointCount: 2048
     m_PVRFilteringMode: 1
     m_PVRDenoiserTypeDirect: 1
     m_PVRDenoiserTypeIndirect: 1
@@ -84,6 +86,7 @@ LightmapSettings:
     m_PVRFilterTypeDirect: 0
     m_PVRFilterTypeIndirect: 0
     m_PVRFilterTypeAO: 0
+    m_PVREnvironmentMIS: 0
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -321,8 +324,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 5.83, y: 4}
-      - {x: 5.83, y: -4}
+    - - {x: 20, y: 3.6}
+      - {x: 20, y: -3.6}
       - {x: -2.5, y: -1}
       - {x: -2.5, y: 1}
 --- !u!1001 &497053237
@@ -405,6 +408,7 @@ GameObject:
   - component: {fileID: 589344359}
   - component: {fileID: 589344358}
   - component: {fileID: 589344360}
+  - component: {fileID: 589344361}
   m_Layer: 0
   m_Name: Sawblade
   m_TagString: Untagged
@@ -490,6 +494,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.2
+--- !u!114 &589344361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589344357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 1adf409122e8adc45b8266275807f0f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &877307603
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +538,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 877307603}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.06, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 589344359}
@@ -607,13 +624,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeSpeed: 0
   maxSpeed: 30
-  upshiftTime: 3
-  downshiftTime: 0.5
+  upshiftTime: 2
+  downshiftTime: 0.4
   shiftTimer: 0
   currentGear: 0
   previousGear: 0
   upshifting: 0
   Blade: {fileID: 589344357}
+  animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 12.828757
+      outSlope: 12.828757
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.33333334
+      outWeight: 0.08109298
+    - serializedVersion: 3
+      time: 0.3
+      value: 0.25
+      inSlope: 14.616435
+      outSlope: 14.616435
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.0012799103
+      outWeight: 0.10115285
+    - serializedVersion: 3
+      time: 0.6
+      value: 0.6
+      inSlope: 16.096315
+      outSlope: 16.096315
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.0068291025
+      outWeight: 0.071703054
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.038294405
+      outSlope: 0.038294405
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.025938034
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animInterp: 1
+  cc: {fileID: 0}
+  tickTimer: 0
+  tickTime: 0.08
 --- !u!114 &877307608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,8 +691,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pc: {fileID: 247152025}
-  suckLength: 5.83
-  suckWidth: 4
+  ba: {fileID: 877307607}
+  suckLength: 20
+  suckWidth: 3.6
+  vacuumPower: 5
   isSucking: 0
 --- !u!114 &877307609
 MonoBehaviour:
@@ -1202,9 +1267,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2075908202}
-  - component: {fileID: 2075908201}
   - component: {fileID: 2075908203}
   - component: {fileID: 2075908204}
+  - component: {fileID: 2075908205}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1212,20 +1277,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2075908201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2075908200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: fec5c555474945e4bbfc72a999ebfb32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprites: []
 --- !u!4 &2075908202
 Transform:
   m_ObjectHideFlags: 0
@@ -1253,7 +1304,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7933625f7a4dd3941b18807f1cb6e5c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkGO: {fileID: 9126463287364868149, guid: 92f8bb74e04b7734a823ba5cfb1847c0, type: 3}
   LoadRange: 4
   generateChunks: 0
   player: {fileID: 877307604}
@@ -1271,6 +1321,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 877307604}
+  world: {fileID: 2075908203}
+--- !u!114 &2075908205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075908200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: fec5c555474945e4bbfc72a999ebfb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enumToSprite:
+  - type: 0
+    sprite: {fileID: -7050129638846038990, guid: 2dedb24b0e37f464dba6affdf3c896f4,
+      type: 3}
+  - type: 1
+    sprite: {fileID: 740662179015539200, guid: 2dedb24b0e37f464dba6affdf3c896f4, type: 3}
 --- !u!1001 &2118692967
 PrefabInstance:
   m_ObjectHideFlags: 0

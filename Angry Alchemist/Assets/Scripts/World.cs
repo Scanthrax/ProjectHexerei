@@ -6,10 +6,7 @@ using System.Linq;
 public class World : MonoBehaviour
 {
     // keep track of the chunks that have been loaded
-    Dictionary<Vector2, Chunk> chunkMap;
-
-    // chunk GameObject
-    public Chunk chunkGO;
+    public Dictionary<Position, Chunk> chunkMap;
 
     // the range of the chunk loading
     public int LoadRange = 4;
@@ -24,7 +21,7 @@ public class World : MonoBehaviour
     private void Awake()
     {
         // init dictionary
-        chunkMap = new Dictionary<Vector2, Chunk>();
+        chunkMap = new Dictionary<Position, Chunk>();
     }
 
 
@@ -85,10 +82,11 @@ public class World : MonoBehaviour
         x += 5;
         y += 5;
 
-        if(!chunkMap.ContainsKey(new Vector2(x,y)))
+        if(!chunkMap.ContainsKey(new Position(x,y)))
         {
-            var chunk = Instantiate(chunkGO, new Vector3(x, y, 0), Quaternion.identity);
-            chunkMap.Add(new Vector2(x, y), chunk.GetComponent<Chunk>());
+            var chunkGO = Instantiate(new GameObject(), new Vector3(x, y, 0), Quaternion.identity);
+            Chunk chunk = new Chunk(chunkGO.transform);
+            chunkMap.Add(new Position(x, y), chunk);
         }
     }
 
@@ -99,8 +97,8 @@ public class World : MonoBehaviour
             var xy = from kvp in deleteChunks where Vector2.Distance(player.transform.position, kvp.transform.position) > LoadRange * Chunk.size select kvp;
             foreach (var item in xy)
             {
-                chunkMap.Remove(item.transform.position);
-                Destroy(item.gameObject);
+                chunkMap.Remove(item.position);
+                Destroy(item.transform.gameObject);
             }
     }
 

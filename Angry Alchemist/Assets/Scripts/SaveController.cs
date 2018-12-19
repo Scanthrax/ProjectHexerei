@@ -13,7 +13,10 @@ public class SaveController : MonoBehaviour
     BinaryFormatter bf;
     FileStream fileStream;
     string path;
+
+
     public Transform player;
+    public World world;
 
     private void Awake()
     {
@@ -52,6 +55,7 @@ public class SaveController : MonoBehaviour
 
         #region Make use of the save data here
         player.position = save.playerPosition.GetPosition();
+        world.chunkMap = save.chunkMap;
         #endregion
 
         #region Serialize & close the file
@@ -85,6 +89,7 @@ public class SaveController : MonoBehaviour
         #region Save any necessary content here
 
         save.playerPosition = new Position(player);
+        save.chunkMap = world.chunkMap;
 
         #endregion
 
