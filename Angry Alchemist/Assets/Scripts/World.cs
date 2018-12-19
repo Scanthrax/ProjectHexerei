@@ -19,6 +19,8 @@ public class World : MonoBehaviour
 
     public bool generateChunks = false;
 
+    public Transform player;
+
     private void Awake()
     {
         // init dictionary
@@ -28,11 +30,10 @@ public class World : MonoBehaviour
 
     private void Start()
     {
-        previousPos = transform.position;
+        previousPos = player.transform.position;
         currentPos = previousPos;
 
         FindChunksToLoad();
-
     }
 
     private void Update()
@@ -40,7 +41,7 @@ public class World : MonoBehaviour
 
         // record our previous position so we can compare it to our current position
         previousPos = currentPos;
-        currentPos = transform.position;
+        currentPos = player.transform.position;
         transitionPos = RoundTo10(currentPos);
 
         #region detect when we cross a transition line
@@ -59,6 +60,17 @@ public class World : MonoBehaviour
             FindChunksToLoad();
             DeleteChunks();
             generateChunks = false;
+        }
+
+
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SaveController.instance.SaveGame();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SaveController.instance.LoadGame();
         }
 
     }
@@ -84,7 +96,7 @@ public class World : MonoBehaviour
     {
         List<Chunk> deleteChunks = new List<Chunk>(chunkMap.Values);
 
-            var xy = from kvp in deleteChunks where Vector2.Distance(transform.position, kvp.transform.position) > LoadRange * Chunk.size select kvp;
+            var xy = from kvp in deleteChunks where Vector2.Distance(player.transform.position, kvp.transform.position) > LoadRange * Chunk.size select kvp;
             foreach (var item in xy)
             {
                 chunkMap.Remove(item.transform.position);
@@ -94,15 +106,14 @@ public class World : MonoBehaviour
 
     void FindChunksToLoad()
     {
-        var xPos = Mathf.RoundToInt(transform.position.x);
-        var yPos = Mathf.RoundToInt(transform.position.y);
+        var xPos = Mathf.RoundToInt(player.transform.position.x);
+        var yPos = Mathf.RoundToInt(player.transform.position.y);
 
         for (int i =  RoundTo10(xPos - (LoadRange * Chunk.size)); i < RoundTo10(xPos + (LoadRange * Chunk.size)); i += Chunk.size)
         {
             for (int j = RoundTo10(yPos - (LoadRange * Chunk.size)); j < RoundTo10(yPos + (LoadRange * Chunk.size)); j += Chunk.size)
             {
                 MakeChunkAt(i,j);
-                print("X: " + i + "   Y: " + j);
             }
         }
     }

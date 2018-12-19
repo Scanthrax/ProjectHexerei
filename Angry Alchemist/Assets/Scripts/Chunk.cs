@@ -11,7 +11,7 @@ public class Chunk : MonoBehaviour
 
     private void Awake()
     {
-        System.Random rnd = new System.Random();
+        //Random.InitState(42);
 
         tiles = new Tile[size, size];
 
@@ -27,7 +27,7 @@ public class Chunk : MonoBehaviour
 
                 
 
-                spriteRenderer.sprite = rnd.Next(2) == 0 ? Full : Empty;
+                spriteRenderer.sprite = Random.Range(0,2) == 0 ? Full : Empty;
             }
 
         }
