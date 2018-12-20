@@ -42,7 +42,7 @@ public struct Position
         this.y = y;
     }
 
-    public Vector2 GetPosition()
+    public Vector2 ToVector2()
     {
         return new Vector2(x, y);
     }

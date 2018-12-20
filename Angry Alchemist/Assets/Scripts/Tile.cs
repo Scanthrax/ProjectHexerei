@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Type { Dirt, Grass, Rock }
+
 [System.Serializable]
 public class Tile
 {
-    public enum Type { Default, Grass, Rock}
+
     public Type type { get; private set; }
 
     public int x { get; private set; }
     public int y { get; private set; }
     public int z { get; private set; }
 
-    public Tile(int x, int y, int z)
+    public Tile(int x, int y, int z, Type type)
     {
         this.x = x;
         this.y = y;
         this.z = z;
 
-        type = Type.Default;
+        this.type = type;
     }
 
 }

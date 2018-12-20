@@ -41,7 +41,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Ground
+  - name: Base Ground
     uniqueID: 1719988701
     locked: 0
   - name: Decorative Ground
@@ -50,9 +50,21 @@ TagManager:
   - name: Solid Objects
     uniqueID: 3739565277
     locked: 0
+  - name: Destructable Objects
+    uniqueID: 558603619
+    locked: 0
+  - name: Mush
+    uniqueID: 2877111469
+    locked: 0
   - name: Blade
     uniqueID: 2884785167
     locked: 0
   - name: Player
     uniqueID: 3798172833
+    locked: 0
+  - name: Enemies
+    uniqueID: 3776542299
+    locked: 0
+  - name: Projectiles
+    uniqueID: 295992237
     locked: 0

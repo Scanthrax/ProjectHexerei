@@ -1,12 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ThrowPotions : MonoBehaviour
 {
+    public PlayerResource playerResource;
+
+
+    public Image potionSlot;
+
+    public PotionObject potionObj;
+
     public bool potionLoaded;
     public AnimationCurve animCurve;
     public GameObject potion;
+
+    public Sprite empty;
 
     void Start()
     {
@@ -16,32 +26,48 @@ public class ThrowPotions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (playerResource.plantMush >= potionObj.plantMushCost)
         {
-            print("potion loaded");
-            potionLoaded = true;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                print("potion loaded");
+                potionLoaded = true;
+
+                // load potion into UI slot
+                potionSlot.sprite = potionObj.image;
+
+            }
         }
 
         if (potionLoaded)
         {
-            if (Input.mouseScrollDelta.y > 0f)
+            if (playerResource.plantMush >= potionObj.plantMushCost)
             {
-                print("overhand");
-                InstantiatePotion(true);
-            }
-            else if (Input.mouseScrollDelta.y < 0f)
-            {
-                print("underhand");
-                InstantiatePotion(false);
+                if (Input.mouseScrollDelta.y > 0f)
+                {
+                    print("overhand");
+                    InstantiatePotion(true, potionObj);
+                    potionSlot.sprite = empty;
+                }
+                else if (Input.mouseScrollDelta.y < 0f)
+                {
+                    print("underhand");
+                    InstantiatePotion(false, potionObj);
+                    potionSlot.sprite = empty;
+                }
             }
         }
     }
 
 
-    void InstantiatePotion(bool overhand)
+    void InstantiatePotion(bool overhand, PotionObject potion)
     {
         potionLoaded = false;
-        var pot = Instantiate(potion, transform.position, Quaternion.identity).GetComponent<Potion>();
+        var pot = Instantiate(this.potion, transform.position, Quaternion.identity).GetComponent<Potion>();
         pot.SetStartAndEnd(Camera.main.ScreenToWorldPoint(Input.mousePosition), overhand);
+        pot.potion = potion;
+        playerResource.plantMush -= potion.plantMushCost;
+        UIManager.instance.plantMush.text = playerResource.plantMush.ToString();
+        //pot.GetComponent<SpriteRenderer>().sprite = potion.image;
     }
 }

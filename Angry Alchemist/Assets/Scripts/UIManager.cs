@@ -16,5 +16,5 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public Text plantMush;
+    public Text plantMush, mineralMush;
 }

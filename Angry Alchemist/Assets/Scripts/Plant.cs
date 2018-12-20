@@ -12,7 +12,8 @@ public class Plant : MonoBehaviour, IDamageable
         print("I am being hit!");
         for (int i = 0; i < 6; i++)
         {
-            Instantiate(mush, transform.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f)),Quaternion.identity);
+            var temp = Instantiate(mush, transform.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f)),Quaternion.identity).GetComponent<Mush>();
+            temp.Init(MushType.Plant);
         }
         Destroy(gameObject);
     }

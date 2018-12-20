@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Potion : MonoBehaviour
 {
-    public AnimationCurve animCurve;
+    public PotionObject potion;
+
+    public AnimationCurve overhandCurve;
+    public AnimationCurve underhandCurve;
 
     public Vector3 start,end;
 
@@ -12,6 +15,13 @@ public class Potion : MonoBehaviour
     public bool launchPotion = false;
     public bool overHand;
 
+    public GameObject potionExplode;
+
+
+    private void Start()
+    {
+        GetComponent<SpriteRenderer>().sprite = potion.image;
+    }
     void Update()
     {
         if(launchPotion)
@@ -21,7 +31,11 @@ public class Potion : MonoBehaviour
 
         if(overHand)
         {
-            transform.localScale = Vector3.one + ((Vector3.one * 2f) * animCurve.Evaluate(time));
+            transform.localScale = Vector3.one + ((Vector3.one * 2f) * overhandCurve.Evaluate(time));
+        }
+        else
+        {
+            transform.localScale = Vector3.one + ((Vector3.one * 2f) * underhandCurve.Evaluate(time));
         }
 
         if (time >= 1f)
@@ -43,6 +57,7 @@ public class Potion : MonoBehaviour
 
     public void Explode()
     {
+        Instantiate(potionExplode, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

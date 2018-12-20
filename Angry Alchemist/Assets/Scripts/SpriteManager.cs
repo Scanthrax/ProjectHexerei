@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum SpriteType { Ground, Grass, Rock, Tree}
 
 
 public class SpriteManager : MonoBehaviour
@@ -11,9 +10,11 @@ public class SpriteManager : MonoBehaviour
 
     public List<EnumToSprite> enumToSprite;
 
+    public List<MushToSprite> mushToSprite;
 
 
-    Dictionary<SpriteType, Sprite> tileSprites;
+
+    Dictionary<string, Sprite> spriteDictionary;
 
     private void Awake()
     {
@@ -23,20 +24,34 @@ public class SpriteManager : MonoBehaviour
             Destroy(this);
 
 
-        tileSprites = new Dictionary<SpriteType, Sprite>();
+        spriteDictionary = new Dictionary<string, Sprite>();
 
         foreach (var item in enumToSprite)
         {
-            tileSprites.Add(item.type, item.sprite);
+            spriteDictionary.Add(item.type.ToString(), item.sprite);
+        }
+        foreach (var item in mushToSprite)
+        {
+            spriteDictionary.Add(item.type.ToString(), item.sprite);
         }
 
     }
 
-    public Sprite GetSprite(SpriteType type)
+    public Sprite GetSprite(Type type)
     {
-        if(tileSprites.ContainsKey(type))
+        return ObtainSprite(type.ToString());
+    }
+
+    public Sprite GetSprite(MushType type)
+    {
+        return ObtainSprite(type.ToString());
+    }
+
+    Sprite ObtainSprite(string type)
+    {
+        if (spriteDictionary.ContainsKey(type))
         {
-            return tileSprites[type];
+            return spriteDictionary[type];
         }
         else
         {
@@ -49,6 +64,13 @@ public class SpriteManager : MonoBehaviour
 [System.Serializable]
 public struct EnumToSprite
 {
-    public SpriteType type;
+    public Type type;
+    public Sprite sprite;
+}
+
+[System.Serializable]
+public struct MushToSprite
+{
+    public MushType type;
     public Sprite sprite;
 }

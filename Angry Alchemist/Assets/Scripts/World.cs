@@ -23,6 +23,10 @@ public class World : MonoBehaviour
     public Transform player;
 
 
+    public GameObject plant;
+
+    public GameObject mush;
+
     public static int size = 10;
 
     private void Awake()
@@ -108,7 +112,8 @@ public class World : MonoBehaviour
 
         if(!chunkMap.ContainsKey(new Position(x,y)))
         {
-            var chunkGO = Instantiate(new GameObject(), new Vector3(x, y, 0), Quaternion.identity);
+            GameObject chunkGO = new GameObject("C_" + x + "_" + y);
+            chunkGO.transform.position = new Vector3(x, y, 0);
             Chunk chunk = new Chunk(x,y,size);
             chunkMap.Add(new Position(x, y), chunk);
             chunkTransform.Add(chunk, chunkGO.transform);
@@ -123,7 +128,7 @@ public class World : MonoBehaviour
             var xy = from kvp in deleteChunks where Vector2.Distance(player.transform.position, chunkTransform[kvp].position) > LoadRange * size select kvp;
             foreach (var item in xy)
             {
-                Destroy(chunkTransform[item].gameObject);
+                //Destroy(chunkTransform[item].gameObject);
                 //chunkMap.Remove(item.position);
                 //chunkTransform.Remove(item);
             }
@@ -172,14 +177,46 @@ public class World : MonoBehaviour
         {
             for (int j = 0; j < size; j++)
             {
-                chunk.tiles[i, j] = new Tile(i + chunk.position.x, j + chunk.position.y, 0);
+                int random = UnityEngine.Random.Range(0, 11);
+                Type tempType;
+                if (random >= 0 && random <= 1)
+                    tempType = Type.Dirt;
+                else if (random >= 2 && random <= 9)
+                    tempType = Type.Grass;
+                else
+                    tempType = Type.Rock;
+
+                chunk.tiles[i, j] = new Tile(chunk.position.x + i,chunk.position.y + j, 0, tempType);
                 GameObject tileGO = new GameObject("T_" + (i + chunk.position.x) + "_" + (j + chunk.position.y));
                 tileGO.transform.position = new Vector3(chunk.tiles[i, j].x - (size / 2), chunk.tiles[i, j].y - (size / 2));
-                tileGO.transform.SetParent(transform, true);
+                tileGO.transform.SetParent(chunkTransform[chunk], true);
+
                 SpriteRenderer spriteRenderer = tileGO.AddComponent<SpriteRenderer>();
-                spriteRenderer.sprite = UnityEngine.Random.Range(0, 6) == 0 ? SpriteManager.instance.GetSprite(SpriteType.Grass) : SpriteManager.instance.GetSprite(SpriteType.Ground);
+                spriteRenderer.sprite = SpriteManager.instance.GetSprite(tempType);
+
+
+                if(chunk.tiles[i, j].type == Type.Grass)
+                {
+                    int random2 = UnityEngine.Random.Range(0, 6);
+                    if(random2 == 0)
+                    {
+                        Instantiate(plant, tileGO.transform.position, Quaternion.identity);
+                    }
+
+                    random2 = UnityEngine.Random.Range(0, 15);
+                    if (random2 == 0)
+                    {
+                        var temp = Instantiate(mush, tileGO.transform.position, Quaternion.identity).GetComponent<Mush>();
+                        temp.Init(MushType.Mineral);
+                    }
+                }
+
+
+
             }
 
         }
     }
+
+
 }

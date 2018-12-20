@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class BladeDamage : MonoBehaviour
 {
+    public VacuumTrigger vacuum;
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-
-        IDamageable testInterface = collision.gameObject.GetComponent<IDamageable>();
-
-        if (testInterface != null)
+        if (vacuum.isSucking)
         {
-            testInterface.DealDamage();
+            IDamageable testInterface = collision.gameObject.GetComponent<IDamageable>();
+
+            if (testInterface != null)
+            {
+                testInterface.DealDamage();
+            }
         }
     }
 }

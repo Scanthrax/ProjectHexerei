@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class PlayerResource : MonoBehaviour
 {
-    public int plantMush;
+    public static PlayerResource instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
+    }
+
+    public int plantMush, mineralMush;
+
 
 
     //private void OnTriggerEnter2D(Collider2D collision)
