@@ -18,9 +18,15 @@ public class Potion : MonoBehaviour
         {
             transform.position = Vector2.Lerp(start, end, time += Time.deltaTime);
         }
+
         if(overHand)
         {
             transform.localScale = Vector3.one + ((Vector3.one * 2f) * animCurve.Evaluate(time));
+        }
+
+        if (time >= 1f)
+        {
+            Explode();
         }
     }
 
@@ -33,4 +39,10 @@ public class Potion : MonoBehaviour
         this.overHand = overHand;
     }
 
+
+
+    public void Explode()
+    {
+        Destroy(gameObject);
+    }
 }

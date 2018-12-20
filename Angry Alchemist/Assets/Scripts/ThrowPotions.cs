@@ -27,22 +27,21 @@ public class ThrowPotions : MonoBehaviour
             if (Input.mouseScrollDelta.y > 0f)
             {
                 print("overhand");
-                InstantiatePotion();
+                InstantiatePotion(true);
             }
             else if (Input.mouseScrollDelta.y < 0f)
             {
                 print("underhand");
-                InstantiatePotion();
+                InstantiatePotion(false);
             }
         }
     }
 
 
-    void InstantiatePotion()
+    void InstantiatePotion(bool overhand)
     {
         potionLoaded = false;
         var pot = Instantiate(potion, transform.position, Quaternion.identity).GetComponent<Potion>();
-        pot.SetStartAndEnd(Camera.main.ScreenToWorldPoint(Input.mousePosition), true);
-        
+        pot.SetStartAndEnd(Camera.main.ScreenToWorldPoint(Input.mousePosition), overhand);
     }
 }

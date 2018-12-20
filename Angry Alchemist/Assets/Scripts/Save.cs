@@ -11,7 +11,8 @@ public class Save
 {
     [SerializeField]
     public Dictionary<Position, Chunk> chunkMap;
-
+    [SerializeField]
+    public Dictionary<Chunk, Transform> chunkTransform;
     [SerializeField]
     public Position playerPosition;
 }

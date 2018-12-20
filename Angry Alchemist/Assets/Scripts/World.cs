@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+
+
 public class World : MonoBehaviour
 {
     // keep track of the chunks that have been loaded
     public Dictionary<Position, Chunk> chunkMap;
+
+    public Dictionary<Chunk, Transform> chunkTransform;
 
     // the range of the chunk loading
     public int LoadRange = 4;
@@ -18,10 +22,14 @@ public class World : MonoBehaviour
 
     public Transform player;
 
+
+    public static int size = 10;
+
     private void Awake()
     {
         // init dictionary
         chunkMap = new Dictionary<Position, Chunk>();
+        chunkTransform = new Dictionary<Chunk, Transform>();
     }
 
 
@@ -72,6 +80,22 @@ public class World : MonoBehaviour
 
     }
 
+    void FindChunksToLoad()
+    {
+        var xPos = Mathf.RoundToInt(player.transform.position.x);
+        var yPos = Mathf.RoundToInt(player.transform.position.y);
+
+        for (int i = RoundTo10(xPos - (LoadRange * size)); i < RoundTo10(xPos + (LoadRange * size)); i += size)
+        {
+            for (int j = RoundTo10(yPos - (LoadRange * size)); j < RoundTo10(yPos + (LoadRange * size)); j += size)
+            {
+                MakeChunkAt(i, j);
+            }
+        }
+    }
+
+
+
     /// <summary>
     /// Checks whether or not a chunk can be placed; if so, make & place the chunk
     /// </summary>
@@ -85,36 +109,27 @@ public class World : MonoBehaviour
         if(!chunkMap.ContainsKey(new Position(x,y)))
         {
             var chunkGO = Instantiate(new GameObject(), new Vector3(x, y, 0), Quaternion.identity);
-            Chunk chunk = new Chunk(chunkGO.transform);
+            Chunk chunk = new Chunk(x,y,size);
             chunkMap.Add(new Position(x, y), chunk);
+            chunkTransform.Add(chunk, chunkGO.transform);
+            MakeChunkTiles(chunk);
         }
     }
 
     void DeleteChunks()
     {
-        List<Chunk> deleteChunks = new List<Chunk>(chunkMap.Values);
+            List<Chunk> deleteChunks = new List<Chunk>(chunkMap.Values);
 
-            var xy = from kvp in deleteChunks where Vector2.Distance(player.transform.position, kvp.transform.position) > LoadRange * Chunk.size select kvp;
+            var xy = from kvp in deleteChunks where Vector2.Distance(player.transform.position, chunkTransform[kvp].position) > LoadRange * size select kvp;
             foreach (var item in xy)
             {
-                chunkMap.Remove(item.position);
-                Destroy(item.transform.gameObject);
+                Destroy(chunkTransform[item].gameObject);
+                //chunkMap.Remove(item.position);
+                //chunkTransform.Remove(item);
             }
     }
 
-    void FindChunksToLoad()
-    {
-        var xPos = Mathf.RoundToInt(player.transform.position.x);
-        var yPos = Mathf.RoundToInt(player.transform.position.y);
 
-        for (int i =  RoundTo10(xPos - (LoadRange * Chunk.size)); i < RoundTo10(xPos + (LoadRange * Chunk.size)); i += Chunk.size)
-        {
-            for (int j = RoundTo10(yPos - (LoadRange * Chunk.size)); j < RoundTo10(yPos + (LoadRange * Chunk.size)); j += Chunk.size)
-            {
-                MakeChunkAt(i,j);
-            }
-        }
-    }
 
 
 
@@ -149,4 +164,22 @@ public class World : MonoBehaviour
             remY >= 5 ? (tempY - remY + 10) : (tempY - remY));
     }
 
+
+
+    void MakeChunkTiles(Chunk chunk)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                chunk.tiles[i, j] = new Tile(i + chunk.position.x, j + chunk.position.y, 0);
+                GameObject tileGO = new GameObject("T_" + (i + chunk.position.x) + "_" + (j + chunk.position.y));
+                tileGO.transform.position = new Vector3(chunk.tiles[i, j].x - (size / 2), chunk.tiles[i, j].y - (size / 2));
+                tileGO.transform.SetParent(transform, true);
+                SpriteRenderer spriteRenderer = tileGO.AddComponent<SpriteRenderer>();
+                spriteRenderer.sprite = UnityEngine.Random.Range(0, 6) == 0 ? SpriteManager.instance.GetSprite(SpriteType.Grass) : SpriteManager.instance.GetSprite(SpriteType.Ground);
+            }
+
+        }
+    }
 }

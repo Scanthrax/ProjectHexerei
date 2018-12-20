@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Tile
 {
-    public enum Type { Empty, Full}
+    public enum Type { Default, Grass, Rock}
     public Type type { get; private set; }
 
     public int x { get; private set; }
@@ -17,8 +18,7 @@ public class Tile
         this.y = y;
         this.z = z;
 
-        type = Type.Full;
-
+        type = Type.Default;
     }
 
 }

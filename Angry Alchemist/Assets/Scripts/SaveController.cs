@@ -56,6 +56,7 @@ public class SaveController : MonoBehaviour
         #region Make use of the save data here
         player.position = save.playerPosition.GetPosition();
         world.chunkMap = save.chunkMap;
+        world.chunkTransform = save.chunkTransform;
         #endregion
 
         #region Serialize & close the file
@@ -90,7 +91,7 @@ public class SaveController : MonoBehaviour
 
         save.playerPosition = new Position(player);
         save.chunkMap = world.chunkMap;
-
+        save.chunkTransform = world.chunkTransform;
         #endregion
 
         #region Serialize & close the file
