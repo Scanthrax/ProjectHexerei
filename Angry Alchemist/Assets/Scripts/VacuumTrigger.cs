@@ -21,13 +21,16 @@ public class VacuumTrigger : MonoBehaviour
 
     public bool isSucking = false;
 
+
+    public Transform vacuum;
+
     void Start()
     {
-        points = new List<Vector2>();
-        points.Add(new Vector2(suckLength, suckWidth));
-        points.Add(new Vector2(suckLength, -suckWidth));
-        points.Add(new Vector2(-2.5f,-1f));
-        points.Add(new Vector2(-2.5f, 1f));
+        //points = new List<Vector2>();
+        //points.Add(new Vector2(suckLength, suckWidth));
+        //points.Add(new Vector2(suckLength, -suckWidth));
+        //points.Add(new Vector2(-2.5f,-1f));
+        //points.Add(new Vector2(-2.5f, 1f));
 
 
         vacuumPower = 0f;
@@ -38,14 +41,14 @@ public class VacuumTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        modifiedLength = suckLength * ba.animInterp;
+        //modifiedLength = suckLength * ba.animInterp;
         vacuumPower = ba.animInterp * 5f;
 
-        #region Update the vacuum's collider to match inspector variables
-        points[0] = new Vector2(modifiedLength, suckWidth);
-        points[1] = new Vector2(modifiedLength, -suckWidth);
-        pc.SetPath(0, points);
-        #endregion
+        //#region Update the vacuum's collider to match inspector variables
+        //points[0] = new Vector2(modifiedLength, suckWidth);
+        //points[1] = new Vector2(modifiedLength, -suckWidth);
+        //pc.SetPath(0, points);
+        //#endregion
 
         if(Input.GetMouseButton(1))
         {
@@ -68,16 +71,16 @@ public class VacuumTrigger : MonoBehaviour
 
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
 
-            ISuckable testInterface = collision.gameObject.GetComponent<ISuckable>();
+    //        ISuckable testInterface = collision.gameObject.GetComponent<ISuckable>();
 
-            if (testInterface != null)
-            {
-                testInterface.Suck(transform.position, vacuumPower);
-            }
-    }
+    //        if (testInterface != null)
+    //        {
+    //            testInterface.Suck(vacuum.position, vacuumPower);
+    //        }
+    //}
 
     #region Unused Gizmo
     //void OnDrawGizmosSelected()

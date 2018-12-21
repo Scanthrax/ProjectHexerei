@@ -6,7 +6,7 @@ public class BladeDamage : MonoBehaviour
 {
     public VacuumTrigger vacuum;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay(Collider collision)
     {
         if (vacuum.isSucking)
         {

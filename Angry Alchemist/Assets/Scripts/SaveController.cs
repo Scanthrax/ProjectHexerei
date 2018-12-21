@@ -18,24 +18,24 @@ public class SaveController : MonoBehaviour
     public Transform player;
     public World world;
 
-    private void Awake()
-    {
-        #region Singleton
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(this);
-        }
-        DontDestroyOnLoad(gameObject);
-        #endregion
+    //private void Awake()
+    //{
+    //    #region Singleton
+    //    if (instance == null)
+    //    {
+    //        instance = this;
+    //    }
+    //    else if (instance != this)
+    //    {
+    //        Destroy(this);
+    //    }
+    //    DontDestroyOnLoad(gameObject);
+    //    #endregion
 
-        bf = new BinaryFormatter();
-        path = Application.persistentDataPath + "/gamesave.save";
-        DeleteSaveFile();
-    }
+    //    bf = new BinaryFormatter();
+    //    path = Application.persistentDataPath + "/gamesave.save";
+    //    DeleteSaveFile();
+    //}
 
 
 

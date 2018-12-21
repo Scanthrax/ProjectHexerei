@@ -6,6 +6,7 @@ public class CollectMush : MonoBehaviour
 {
     public PlayerResource playerResource;
     public VacuumTrigger vacuum;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (vacuum.isSucking)

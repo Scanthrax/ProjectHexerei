@@ -7,7 +7,6 @@ public enum MushType { Null, Plant, Mineral, Creature, Demon}
 
 public class Mush : MonoBehaviour, ISuckable
 {
-    public PlayerResource pr;
 
     MushType type;
 

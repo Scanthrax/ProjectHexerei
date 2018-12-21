@@ -16,7 +16,7 @@ public class World : MonoBehaviour
     public int LoadRange = 4;
 
 
-    Vector2 previousPos, currentPos, transitionPos;
+    Vector3 previousPos, currentPos, transitionPos;
 
     public bool generateChunks = false;
 
@@ -57,8 +57,8 @@ public class World : MonoBehaviour
         if(
             (previousPos.x < transitionPos.x && currentPos.x > transitionPos.x) ||
             (previousPos.x > transitionPos.x && currentPos.x < transitionPos.x) ||
-            (previousPos.y < transitionPos.y && currentPos.y > transitionPos.y) ||
-            (previousPos.y > transitionPos.y && currentPos.y < transitionPos.y))
+            (previousPos.z < transitionPos.z && currentPos.z > transitionPos.z) ||
+            (previousPos.z > transitionPos.z && currentPos.z < transitionPos.z))
         {
             generateChunks = true;
         }
@@ -86,8 +86,8 @@ public class World : MonoBehaviour
 
     void FindChunksToLoad()
     {
-        var xPos = Mathf.RoundToInt(player.transform.position.x);
-        var yPos = Mathf.RoundToInt(player.transform.position.y);
+        var xPos = Mathf.RoundToInt(currentPos.x);
+        var yPos = Mathf.RoundToInt(currentPos.z);
 
         for (int i = RoundTo10(xPos - (LoadRange * size)); i < RoundTo10(xPos + (LoadRange * size)); i += size)
         {
@@ -113,7 +113,7 @@ public class World : MonoBehaviour
         if(!chunkMap.ContainsKey(new Position(x,y)))
         {
             GameObject chunkGO = new GameObject("C_" + x + "_" + y);
-            chunkGO.transform.position = new Vector3(x, y, 0);
+            chunkGO.transform.position = new Vector3(x, 0, y);
             Chunk chunk = new Chunk(x,y,size);
             chunkMap.Add(new Position(x, y), chunk);
             chunkTransform.Add(chunk, chunkGO.transform);
@@ -156,16 +156,17 @@ public class World : MonoBehaviour
     /// </summary>
     /// <param name="num"></param>
     /// <returns></returns>
-    Vector2 RoundTo10(Vector2 num)
+    Vector3 RoundTo10(Vector3 num)
     {
         int tempX = Mathf.RoundToInt(num.x);
-        int tempY = Mathf.RoundToInt(num.y);
+        int tempY = Mathf.RoundToInt(num.z);
 
         int remX = tempX % 10;
         int remY = tempY % 10;
 
-        return new Vector2(
+        return new Vector3(
             remX >= 5 ? (tempX - remX + 10) : (tempX - remX),
+            num.y,
             remY >= 5 ? (tempY - remY + 10) : (tempY - remY));
     }
 
@@ -186,9 +187,10 @@ public class World : MonoBehaviour
                 else
                     tempType = Type.Rock;
 
-                chunk.tiles[i, j] = new Tile(chunk.position.x + i,chunk.position.y + j, 0, tempType);
+                chunk.tiles[i, j] = new Tile(chunk.position.x + i,0, chunk.position.y + j, tempType);
                 GameObject tileGO = new GameObject("T_" + (i + chunk.position.x) + "_" + (j + chunk.position.y));
-                tileGO.transform.position = new Vector3(chunk.tiles[i, j].x - (size / 2), chunk.tiles[i, j].y - (size / 2));
+                tileGO.transform.position = new Vector3(chunk.tiles[i, j].x - (size / 2), 0, chunk.tiles[i, j].y - (size / 2));
+                tileGO.transform.rotation = Quaternion.Euler(90, 0, 0);
                 tileGO.transform.SetParent(chunkTransform[chunk], true);
 
                 SpriteRenderer spriteRenderer = tileGO.AddComponent<SpriteRenderer>();
