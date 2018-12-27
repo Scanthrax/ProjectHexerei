@@ -54,7 +54,7 @@ public class SaveController : MonoBehaviour
         #endregion
 
         #region Make use of the save data here
-        player.position = save.playerPosition.ToVector2();
+        player.position = save.playerPosition.ToVector3();
         world.chunkMap = save.chunkMap;
         world.chunkTransform = save.chunkTransform;
         #endregion

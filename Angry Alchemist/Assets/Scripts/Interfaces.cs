@@ -7,7 +7,7 @@ public interface IDamageable
 
 interface ISuckable
 {
-    void Suck(Vector2 pos, float power);
+    void Suck(Vector3 pos, float power);
     void Consume();
 }
 

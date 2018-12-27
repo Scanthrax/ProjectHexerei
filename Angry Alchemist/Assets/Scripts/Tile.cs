@@ -3,24 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Type { Dirt, Grass, Rock }
-
+public enum Direction { North, East, South, West}
 [System.Serializable]
 public class Tile
 {
 
-    public Type type { get; private set; }
+    public Type type;
 
-    public int x { get; private set; }
-    public int y { get; private set; }
-    public int z { get; private set; }
+    public Position position { get; private set; }
 
-    public Tile(int x, int y, int z, Type type)
+    public Chunk ParentChunk;
+
+    public Tile[] adjacent = new Tile[4];
+
+    public bool Solid = false;
+
+
+    public Tile(Position pos, Type type)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-
+        position = pos;
         this.type = type;
+    }
+
+    public Tile(Position pos)
+    {
+        position = pos;
+    }
+    public Tile(Position pos, Chunk parent)
+    {
+        position = pos;
+        ParentChunk = parent;
     }
 
 }

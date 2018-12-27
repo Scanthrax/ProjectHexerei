@@ -9,6 +9,14 @@ public class MoveCamera : MonoBehaviour
 
     public Vector2[] dist = new Vector2[2];
 
+
+    bool moveCam = false;
+
+
+    float time = 0f;
+    public float AmountOftime;
+    Vector3 startingPoint;
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.A))
@@ -32,6 +40,31 @@ public class MoveCamera : MonoBehaviour
 
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, player.position.x - dist[0].x, player.position.x + dist[0].y), transform.position.y, Mathf.Clamp(transform.position.z, player.position.z - dist[1].x, player.position.z + dist[1].y));
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            moveCam = true;
+            startingPoint = transform.position;
+        }
+
+        if (moveCam)
+        {
+            time += Time.deltaTime;
+            var ratio = Mathf.Min( time / AmountOftime, 1f);
+
+            transform.position = Vector3.Lerp(
+                new Vector3(startingPoint.x, startingPoint.y, startingPoint.z),
+                new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z),
+                ratio);
+
+            
+
+            if (ratio >= 1f)
+            {
+                time = 0f;
+                moveCam = false;
+            }
+        }
 
     }
 }

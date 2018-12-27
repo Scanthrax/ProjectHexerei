@@ -27,7 +27,17 @@ public class World : MonoBehaviour
 
     public GameObject mush;
 
+    public GameObject rock;
+
     public static int size = 10;
+
+    public GameObject chunkObject;
+
+    public Transform ChunkContainer;
+
+    System.Type[] components;
+
+    float randomNoise;
 
     private void Awake()
     {
@@ -39,10 +49,16 @@ public class World : MonoBehaviour
 
     private void Start()
     {
+        randomNoise = Random.value * 1000f;
+        components = new System.Type[2];
+        components[0] = typeof(MeshFilter);
+        components[1] = typeof(MeshRenderer);
+
         previousPos = player.transform.position;
         currentPos = previousPos;
 
         FindChunksToLoad();
+
     }
 
     private void Update()
@@ -87,11 +103,11 @@ public class World : MonoBehaviour
     void FindChunksToLoad()
     {
         var xPos = Mathf.RoundToInt(currentPos.x);
-        var yPos = Mathf.RoundToInt(currentPos.z);
+        var zPos = Mathf.RoundToInt(currentPos.z);
 
         for (int i = RoundTo10(xPos - (LoadRange * size)); i < RoundTo10(xPos + (LoadRange * size)); i += size)
         {
-            for (int j = RoundTo10(yPos - (LoadRange * size)); j < RoundTo10(yPos + (LoadRange * size)); j += size)
+            for (int j = RoundTo10(zPos - (LoadRange * size)); j < RoundTo10(zPos + (LoadRange * size)); j += size)
             {
                 MakeChunkAt(i, j);
             }
@@ -105,19 +121,21 @@ public class World : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    void MakeChunkAt(int x, int y)
+    void MakeChunkAt(int x, int z)
     {
-        x += 5;
-        y += 5;
+        x += size / 2;
+        z += size / 2;
 
-        if(!chunkMap.ContainsKey(new Position(x,y)))
+        if(!chunkMap.ContainsKey(new Position(x,0,z)))
         {
-            GameObject chunkGO = new GameObject("C_" + x + "_" + y);
-            chunkGO.transform.position = new Vector3(x, 0, y);
-            Chunk chunk = new Chunk(x,y,size);
-            chunkMap.Add(new Position(x, y), chunk);
+            GameObject chunkGO = new GameObject("C_" + x + "_" + z, components);
+            chunkGO.transform.position = new Vector3(x, 0, z);
+            chunkGO.transform.SetParent(ChunkContainer);
+            Chunk chunk = new Chunk(x,0,z,size);
+            chunkMap.Add(new Position(x, 0, z), chunk);
             chunkTransform.Add(chunk, chunkGO.transform);
             MakeChunkTiles(chunk);
+            GenerateMeshes(chunkGO, chunk);
         }
     }
 
@@ -178,46 +196,65 @@ public class World : MonoBehaviour
         {
             for (int j = 0; j < size; j++)
             {
-                int random = UnityEngine.Random.Range(0, 11);
-                Type tempType;
-                if (random >= 0 && random <= 1)
-                    tempType = Type.Dirt;
-                else if (random >= 2 && random <= 9)
-                    tempType = Type.Grass;
-                else
-                    tempType = Type.Rock;
-
-                chunk.tiles[i, j] = new Tile(chunk.position.x + i,0, chunk.position.y + j, tempType);
-                GameObject tileGO = new GameObject("T_" + (i + chunk.position.x) + "_" + (j + chunk.position.y));
-                tileGO.transform.position = new Vector3(chunk.tiles[i, j].x - (size / 2), 0, chunk.tiles[i, j].y - (size / 2));
-                tileGO.transform.rotation = Quaternion.Euler(90, 0, 0);
-                tileGO.transform.SetParent(chunkTransform[chunk], true);
-
-                SpriteRenderer spriteRenderer = tileGO.AddComponent<SpriteRenderer>();
-                spriteRenderer.sprite = SpriteManager.instance.GetSprite(tempType);
-
-
-                if(chunk.tiles[i, j].type == Type.Grass)
-                {
-                    int random2 = UnityEngine.Random.Range(0, 6);
-                    if(random2 == 0)
-                    {
-                        Instantiate(plant, tileGO.transform.position, Quaternion.identity);
-                    }
-
-                    random2 = UnityEngine.Random.Range(0, 15);
-                    if (random2 == 0)
-                    {
-                        var temp = Instantiate(mush, tileGO.transform.position, Quaternion.identity).GetComponent<Mush>();
-                        temp.Init(MushType.Mineral);
-                    }
-                }
-
-
-
+                // make a new tile
+                var tile = new Tile(new Position(chunk.position.x + i, 0, chunk.position.z + j), chunk);
+                // equation for environmental noise
+                var noise = Mathf.PerlinNoise(randomNoise + ((chunk.position.x + i) * 0.11f), randomNoise + ((chunk.position.z + j) * 0.11f));
+                tile.type = noise <= 0.65f ? Type.Grass : Type.Dirt;
+                // save each tile in the chunk
+                chunk.tiles[i, j] = tile;
             }
-
         }
+
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if(j != size-1)
+                    chunk.tiles[i, j].adjacent[(int)Direction.North] = chunk.tiles[i, j + 1];
+                if (i != size-1)
+                    chunk.tiles[i, j].adjacent[(int)Direction.East] = chunk.tiles[i + 1, j];
+                if (j != 0)
+                    chunk.tiles[i, j].adjacent[(int)Direction.South] = chunk.tiles[i, j - 1];
+                if (i != 0)
+                    chunk.tiles[i, j].adjacent[(int)Direction.West] = chunk.tiles[i - 1, j];
+            }
+        }
+    }
+
+
+
+
+    void SpawnItems(Chunk chunk,int i, int j)
+    {
+        if (Random.value < 0.05f)
+        {
+            var temp3 = Instantiate(plant, new Vector3(chunk.position.x + i + 0.5f, 0, chunk.position.z + j + 0.5f), Quaternion.Euler(90, 0, 0));
+            temp3.transform.SetParent(chunkTransform[chunk]);
+        }
+
+        if (Random.value < 0.03f)
+        {
+            var temp4 = Instantiate(mush, new Vector3(chunk.position.x + i + 0.5f, 0, chunk.position.z + j + 0.5f), Quaternion.Euler(90, 0, 0)).GetComponent<Mush>();
+            temp4.Init(MushType.Mineral);
+            temp4.transform.SetParent(chunkTransform[chunk]);
+        }
+
+        if (Random.value < 0.03f)
+        {
+            //temp.Solid = true;
+            var temp5 = Instantiate(rock, new Vector3(chunk.position.x + i + 0.5f, 0, chunk.position.z + j + 0.5f), Quaternion.identity);
+            temp5.transform.SetParent(chunkTransform[chunk]);
+        }
+    }
+
+
+    void GenerateMeshes(GameObject go, Chunk chunk)
+    {
+        Mesh mesh = new Mesh();
+        go.GetComponent<MeshFilter>().mesh = mesh;
+        MeshRenderer renderer = go.GetComponent<MeshRenderer>();
+        MeshGenerator.instance.CreateShape(mesh,renderer,chunk);
     }
 
 

@@ -14,10 +14,10 @@ public class Chunk
     // each chunk has a position in world space
     public Position position;
 
-    public Chunk(int x, int y, int size)
+    public Chunk(int x, int y, int z, int size)
     {
         // mark the position of this chunk
-        position = new Position(x,y);
+        position = new Position(x,y,z);
 
         //Random.InitState(42);
 

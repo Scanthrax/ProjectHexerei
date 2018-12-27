@@ -83,6 +83,12 @@ public class BladeAcceleration : MonoBehaviour
 
     public float tickTimer, tickTime;
 
+    public bool DamageTick;
+
+    public AudioSource sawIdle;
+    public AudioSource sawActive;
+
+
 
     void Start()
     {
@@ -137,10 +143,12 @@ public class BladeAcceleration : MonoBehaviour
         {
             print("tick!");
             tickTimer -= tickTime;
+            DamageTick = true;
         }
         else
         {
             tickTimer += (Time.deltaTime * animInterp);
+            DamageTick = false;
         }
 
 
@@ -158,6 +166,24 @@ public class BladeAcceleration : MonoBehaviour
         //    default:
         //        break;
         //}
+
+
+
+
+
+        if (animInterp <= 0.1f)
+        {
+            sawIdle.enabled = true;
+            sawActive.enabled = false;
+        }
+        else
+        {
+            sawIdle.enabled = false;
+            sawActive.enabled = true;
+            sawActive.pitch = 0.7f + (0.3f * animInterp);
+        }
+
+
 
 
 

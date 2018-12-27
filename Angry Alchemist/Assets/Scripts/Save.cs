@@ -23,27 +23,37 @@ public class Save
 [Serializable]
 public struct Position
 {
-    public int x;
-    public int y;
+    public int x { get; private set; }
+    public int y { get; private set; }
+    public int z { get; private set; }
 
     public Position(Transform obj)
     {
         x = Mathf.RoundToInt(obj.position.x);
         y = Mathf.RoundToInt(obj.position.y);
+        z = Mathf.RoundToInt(obj.position.z);
     }
-    public Position(float x, float y)
+    public Position(Vector3 obj)
+    {
+        x = Mathf.RoundToInt(obj.x);
+        y = Mathf.RoundToInt(obj.y);
+        z = Mathf.RoundToInt(obj.z);
+    }
+    public Position(float x, float y, float z)
     {
         this.x = Mathf.RoundToInt(x);
         this.y = Mathf.RoundToInt(y);
+        this.z = Mathf.RoundToInt(z);
     }
-    public Position(int x, int y)
+    public Position(int x, int y, int z)
     {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
-    public Vector2 ToVector2()
+    public Vector3 ToVector3()
     {
-        return new Vector2(x, y);
+        return new Vector3(x, y, z);
     }
 }

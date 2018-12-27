@@ -9,12 +9,14 @@ public class Mush : MonoBehaviour, ISuckable
 {
 
     MushType type;
-
+    AudioSource source;
 
     public void Init(MushType type)
     {
         this.type = type;
         GetComponent<SpriteRenderer>().sprite = SpriteManager.instance.GetSprite(type);
+        source = GetComponent<AudioSource>();
+        source.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.SuckMush);
     }
 
 
@@ -31,6 +33,10 @@ public class Mush : MonoBehaviour, ISuckable
                 PlayerResource.instance.mineralMush++;
                 UIManager.instance.mineralMush.text = PlayerResource.instance.mineralMush.ToString();
                 break;
+            case MushType.Creature:
+                PlayerResource.instance.creatureMush++;
+                UIManager.instance.creatureMush.text = PlayerResource.instance.creatureMush.ToString();
+                break;
             case MushType.Null:
                 print("Shouldn't be here!");
                 break;
@@ -38,13 +44,21 @@ public class Mush : MonoBehaviour, ISuckable
                 break;
         }
 
-        Destroy(gameObject);
+        foreach (var item in transform.GetComponents(typeof(Component)))
+        {
+            if (item.GetType() == typeof(AudioSource) || item.GetType() == typeof(Transform))
+                continue;
+            Destroy(item);
+        }
+
+        source.Play();
+        Destroy(gameObject, source.clip.length);
     }
 
-    public void Suck(Vector2 pos, float power)
+    public void Suck(Vector3 pos, float power)
     {
         print("I am being sucked!");
-        transform.position = Vector2.MoveTowards(transform.position, pos, Time.deltaTime * power);
+        transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * power);
     }
 
 }

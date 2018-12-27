@@ -3,6 +3,7 @@
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "3.2.2",
     "com.unity.collab-proxy": "1.2.9",
+    "com.unity.entities": "0.0.12-preview.21",
     "com.unity.package-manager-ui": "0.0.0-builtin",
     "com.unity.probuilder": "3.0.9",
     "com.unity.purchasing": "2.0.1",
@@ -39,5 +40,12 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+    "registry": "https://packages.unity.com", 
+    "testables": [
+        "com.unity.collections", 
+        "com.unity.entities", 
+        "com.unity.jobs", 
+        "com.unity.test-framework.performance"
+    ]
 }

@@ -6,6 +6,8 @@ public class PlayerResource : MonoBehaviour
 {
     public static PlayerResource instance;
 
+    public GameObject mush;
+
     private void Awake()
     {
         if (instance == null)
@@ -14,7 +16,7 @@ public class PlayerResource : MonoBehaviour
             Destroy(this);
     }
 
-    public int plantMush, mineralMush;
+    public int plantMush, mineralMush, creatureMush;
 
 
 
