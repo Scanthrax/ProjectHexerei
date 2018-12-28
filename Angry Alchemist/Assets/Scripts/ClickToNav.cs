@@ -8,12 +8,11 @@ public class ClickToNav : MonoBehaviour
 
     NavMeshAgent agent;
 
-    AudioSource source;
+    public AudioSource source;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        source = GetComponent<AudioSource>();
     }
     void Update()
     {

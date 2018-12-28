@@ -11,7 +11,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] Splats;
     public AudioClip[] WalkGravel;
     public AudioClip[] SuckMush;
-
+    public AudioClip[] Whoosh;
+    public AudioClip LoadPotion;
 
     public AudioClip GetRandomSound(AudioClip[] library)
     {

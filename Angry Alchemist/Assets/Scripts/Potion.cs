@@ -17,10 +17,12 @@ public class Potion : MonoBehaviour
 
     public GameObject potionExplode;
 
+    public AudioSource source;
 
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = potion.image;
+        source = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -58,6 +60,14 @@ public class Potion : MonoBehaviour
     public void Explode()
     {
         Instantiate(potionExplode, new Vector3(transform.position.x,0,transform.position.z), Quaternion.Euler(90,0,0));
-        Destroy(gameObject);
+
+        foreach (var item in transform.GetComponents(typeof(Component)))
+        {
+            if (item.GetType() == typeof(AudioSource) || item.GetType() == typeof(Transform))
+                continue;
+            Destroy(item);
+        }
+        source.Play();
+        Destroy(gameObject, source.clip.length);
     }
 }

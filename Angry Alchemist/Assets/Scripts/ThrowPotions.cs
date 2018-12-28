@@ -18,6 +18,9 @@ public class ThrowPotions : MonoBehaviour
 
     public Sprite empty;
 
+    public AudioSource whooshSource;
+    public AudioSource loadPotionSource;
+
     void Start()
     {
         potionLoaded = false;
@@ -27,7 +30,7 @@ public class ThrowPotions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerResource.plantMush >= potionObj.plantMushCost)
+        if (playerResource.plantMush >= potionObj.plantMushCost && !potionLoaded)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -36,6 +39,7 @@ public class ThrowPotions : MonoBehaviour
 
                 // load potion into UI slot
                 potionSlot.sprite = potionObj.image;
+                loadPotionSource.Play();
 
             }
         }
@@ -49,12 +53,16 @@ public class ThrowPotions : MonoBehaviour
                     print("overhand");
                     InstantiatePotion(true, potionObj);
                     potionSlot.sprite = empty;
+                    whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
+                    whooshSource.Play();
                 }
                 else if (Input.mouseScrollDelta.y < 0f)
                 {
                     print("underhand");
                     InstantiatePotion(false, potionObj);
                     potionSlot.sprite = empty;
+                    whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
+                    whooshSource.Play();
                 }
             }
         }
