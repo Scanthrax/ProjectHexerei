@@ -17,9 +17,10 @@ public class Plant : MonoBehaviour, IDamageable
 
     public void DealDamage()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 1; i++)
         {
-            var temp = Instantiate(PlayerResource.instance.mush, transform.position + new Vector3(Random.Range(-2f, 2f), 0f, Random.Range(-2f, 2f)), Quaternion.Euler(90f, 0, 0)).GetComponent<Mush>();
+            var range = 1.5f;
+            var temp = Instantiate(PlayerResource.instance.mush, transform.position + new Vector3(Random.Range(-range, range), 0f, Random.Range(-range, range)), Quaternion.Euler(90f, 0, 0)).GetComponent<Mush>();
             temp.Init(MushType.Plant);
         }
 

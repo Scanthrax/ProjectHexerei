@@ -7,13 +7,14 @@ public class Enemy : MonoBehaviour, IDamageable
 {
     public int health;
     public AudioSource source;
-    public Transform player;
+    Transform player;
     public NavMeshAgent agent;
 
     private void Start()
     {
         source = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public void DealDamage()

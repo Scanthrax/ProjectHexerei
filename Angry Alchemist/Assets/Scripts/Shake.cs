@@ -26,7 +26,7 @@ public class Shake : MonoBehaviour
     {
         if (shake)
         {
-            sprite.localPosition = new Vector3(Mathf.PerlinNoise(startTime.x + Time.time * speed, 0f), 0, Mathf.PerlinNoise(startTime.y + Time.time * speed, 0f)) * wideness;
+            sprite.localPosition = new Vector3(Mathf.PerlinNoise(startTime.x + Time.time * speed, 0f) - (2*wideness), 0, Mathf.PerlinNoise(startTime.y + Time.time * speed, 0f) - (2*wideness)) * wideness;
         }
     }
 }

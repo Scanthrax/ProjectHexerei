@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 9093661654117706238}
   - component: {fileID: 8079512239142275276}
   - component: {fileID: 3380567422039291080}
-  - component: {fileID: 7502465759630892363}
   - component: {fileID: 6786933502783970134}
-  - component: {fileID: 6617213878391321177}
+  - component: {fileID: 1884135908290840314}
+  - component: {fileID: 5251915851573099725}
   m_Layer: 0
-  m_Name: Rock3D
+  m_Name: Bush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,8 +45,8 @@ NavMeshObstacle:
   m_GameObject: {fileID: 5323021281668342204}
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.3, y: 0.5, z: 0.3}
+  m_Shape: 0
+  m_Extents: {x: 0.28, y: 1, z: 0.28}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -68,19 +68,6 @@ MonoBehaviour:
   speed: 15
   wideness: 0.2
   shake: 0
---- !u!65 &7502465759630892363
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5323021281668342204}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.82, y: 1, z: 0.6}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6786933502783970134
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -95,9 +82,22 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &6617213878391321177
+--- !u!135 &1884135908290840314
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323021281668342204}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.43
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5251915851573099725
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,9 +107,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: df8196a1e2c1a3449bcce9ad81886c8f, type: 3}
+  m_Script: {fileID: 11500000, guid: 88630d7151951864b9f9e51bc5a23062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 8
 --- !u!1 &7973868456476565514
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +179,7 @@ SpriteRenderer:
   m_SortingLayerID: -555402019
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 46e12e862ee6f1145918244713d8978e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d34f6c83b5a6e314281a4803a56f08d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
