@@ -129,7 +129,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!135 &395054593375592516
 SphereCollider:
@@ -142,7 +142,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.66
+  m_Radius: 0.54
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &5109468050035064891
 NavMeshAgent:
@@ -153,7 +153,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4849750515046645491}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.66
+  m_Radius: 0.54
   m_Speed: 2
   m_Acceleration: 2000
   avoidancePriority: 50
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   source: {fileID: 3390493046415191505}
-  player: {fileID: 0}
+  player: {fileID: 3602740422147249623, guid: 8c74726693019f14098e475e7cb32ad9, type: 3}
   agent: {fileID: 0}
 --- !u!82 &3390493046415191505
 AudioSource:

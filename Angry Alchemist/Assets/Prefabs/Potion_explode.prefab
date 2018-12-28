@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8283862243187839262}
   - component: {fileID: 1156311601026580362}
   - component: {fileID: 4212403890488231803}
+  - component: {fileID: 1154587567568864500}
+  - component: {fileID: 5034832264535047896}
   m_Layer: 0
   m_Name: Potion_explode
   m_TagString: Untagged
@@ -25,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432356128850050297}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.644, y: -0.222, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &1156311601026580362
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -99,3 +101,29 @@ MonoBehaviour:
   - {fileID: 21300000, guid: df291027cbb4d5b49a95fea47fc980f9, type: 3}
   - {fileID: 21300000, guid: 634a3d5413278fb46b8e8453853fb45e, type: 3}
   framesPerSecond: 10
+--- !u!65 &1154587567568864500
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432356128850050297}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.28, y: 1.2800003, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5034832264535047896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432356128850050297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 7e595b3cef7f9e54eb3b096d0b5fc295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

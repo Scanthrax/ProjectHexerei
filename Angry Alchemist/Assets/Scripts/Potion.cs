@@ -26,16 +26,16 @@ public class Potion : MonoBehaviour
     {
         if(launchPotion)
         {
-            transform.position = Vector2.Lerp(start, end, time += Time.deltaTime);
+            transform.position = Vector3.Lerp(start, end, time += Time.deltaTime);
         }
 
         if(overHand)
         {
-            transform.localScale = Vector3.one + ((Vector3.one * 2f) * overhandCurve.Evaluate(time));
+            transform.localScale = Vector3.one + ((Vector3.one * 1f) * overhandCurve.Evaluate(time));
         }
         else
         {
-            transform.localScale = Vector3.one + ((Vector3.one * 2f) * underhandCurve.Evaluate(time));
+            transform.localScale = Vector3.one + ((Vector3.one * 1f) * underhandCurve.Evaluate(time));
         }
 
         if (time >= 1f)
@@ -57,7 +57,7 @@ public class Potion : MonoBehaviour
 
     public void Explode()
     {
-        Instantiate(potionExplode, transform.position, Quaternion.identity);
+        Instantiate(potionExplode, new Vector3(transform.position.x,0,transform.position.z), Quaternion.Euler(90,0,0));
         Destroy(gameObject);
     }
 }

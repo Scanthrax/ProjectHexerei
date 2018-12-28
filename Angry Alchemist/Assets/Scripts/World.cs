@@ -29,9 +29,11 @@ public class World : MonoBehaviour
 
     public GameObject rock;
 
+    public GameObject bush;
+
+    public GameObject enemy;
     public static int size = 10;
 
-    public GameObject chunkObject;
 
     public Transform ChunkContainer;
 
@@ -210,14 +212,16 @@ public class World : MonoBehaviour
         {
             for (int j = 0; j < size; j++)
             {
-                if(j != size-1)
-                    chunk.tiles[i, j].adjacent[(int)Direction.North] = chunk.tiles[i, j + 1];
-                if (i != size-1)
-                    chunk.tiles[i, j].adjacent[(int)Direction.East] = chunk.tiles[i + 1, j];
-                if (j != 0)
-                    chunk.tiles[i, j].adjacent[(int)Direction.South] = chunk.tiles[i, j - 1];
-                if (i != 0)
-                    chunk.tiles[i, j].adjacent[(int)Direction.West] = chunk.tiles[i - 1, j];
+                //if(j != size-1)
+                //    chunk.tiles[i, j].adjacent[(int)Direction.North] = chunk.tiles[i, j + 1];
+                //if (i != size-1)
+                //    chunk.tiles[i, j].adjacent[(int)Direction.East] = chunk.tiles[i + 1, j];
+                //if (j != 0)
+                //    chunk.tiles[i, j].adjacent[(int)Direction.South] = chunk.tiles[i, j - 1];
+                //if (i != 0)
+                //    chunk.tiles[i, j].adjacent[(int)Direction.West] = chunk.tiles[i - 1, j];
+
+                SpawnItems(chunk, i, j);
             }
         }
     }
@@ -244,6 +248,20 @@ public class World : MonoBehaviour
         {
             //temp.Solid = true;
             var temp5 = Instantiate(rock, new Vector3(chunk.position.x + i + 0.5f, 0, chunk.position.z + j + 0.5f), Quaternion.identity);
+            temp5.transform.SetParent(chunkTransform[chunk]);
+        }
+
+        if (Random.value < 0.03f)
+        {
+            //temp.Solid = true;
+            var temp5 = Instantiate(bush, new Vector3(chunk.position.x + i + 0.5f, 0, chunk.position.z + j + 0.5f), Quaternion.identity);
+            temp5.transform.SetParent(chunkTransform[chunk]);
+        }
+
+        if (Random.value < 0.005f)
+        {
+            //temp.Solid = true;
+            var temp5 = Instantiate(enemy, new Vector3(chunk.position.x + i + 0.5f, 0, chunk.position.z + j + 0.5f), Quaternion.identity);
             temp5.transform.SetParent(chunkTransform[chunk]);
         }
     }

@@ -21,6 +21,7 @@ public class ThrowPotions : MonoBehaviour
     void Start()
     {
         potionLoaded = false;
+        playerResource = PlayerResource.instance;
     }
 
     // Update is called once per frame
@@ -63,7 +64,7 @@ public class ThrowPotions : MonoBehaviour
     void InstantiatePotion(bool overhand, PotionObject potion)
     {
         potionLoaded = false;
-        var pot = Instantiate(this.potion, transform.position, Quaternion.identity).GetComponent<Potion>();
+        var pot = Instantiate(this.potion, transform.position, Quaternion.Euler(90,Random.value * 360f,0)).GetComponent<Potion>();
         pot.SetStartAndEnd(Camera.main.ScreenToWorldPoint(Input.mousePosition), overhand);
         pot.potion = potion;
         playerResource.plantMush -= potion.plantMushCost;

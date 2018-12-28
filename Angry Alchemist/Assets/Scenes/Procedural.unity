@@ -311,8 +311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02789bd60f5a17e428039d12dea5a230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerResource: {fileID: 877307613}
-  vacuum: {fileID: 877307608}
 --- !u!58 &16080653
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -881,7 +879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1adf409122e8adc45b8266275807f0f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vacuum: {fileID: 877307608}
+  ba: {fileID: 0}
 --- !u!82 &589344362
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1396,6 +1394,9 @@ MonoBehaviour:
   cc: {fileID: 0}
   tickTimer: 0
   tickTime: 0.08
+  DamageTick: 0
+  sawIdle: {fileID: 0}
+  sawActive: {fileID: 0}
 --- !u!114 &877307608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1409,10 +1410,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11450bbdf6edd384493ea68a9eca5011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pc: {fileID: 247152025}
+  cc: {fileID: 0}
   ba: {fileID: 877307607}
   suckLength: 20
-  suckWidth: 3.6
   vacuumPower: 5
   isSucking: 0
 --- !u!114 &877307609
@@ -1428,6 +1428,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61be87d5e999bd343af949385d3fe151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseAngle: 0
+  currentAngle: 0
+  speed: 0
 --- !u!50 &877307611
 Rigidbody2D:
   serializedVersion: 4
@@ -1487,8 +1490,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9c2d044a1b62847a989c1469ee46b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mush: {fileID: 0}
   plantMush: 0
   mineralMush: 0
+  creatureMush: 0
 --- !u!1 &906296598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1737,6 +1742,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 877307604}
+  speed: 5
+  dist:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  AmountOftime: 0
 --- !u!1 &1151339848
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,6 +2190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantMush: {fileID: 373287374}
   mineralMush: {fileID: 201336953}
+  creatureMush: {fileID: 0}
 --- !u!4 &2075908202
 Transform:
   m_ObjectHideFlags: 0
@@ -2210,8 +2221,11 @@ MonoBehaviour:
   LoadRange: 4
   generateChunks: 0
   player: {fileID: 877307604}
-  plant: {fileID: 9066062776493276321, guid: 0cb4c9d69dcd48541bb845eb276fc535, type: 3}
+  plant: {fileID: 5323021281668342204, guid: 6c899db598f9c9d4d9ecd237109a75eb, type: 3}
   mush: {fileID: 8528293010348765561, guid: 3434d13465569a74ea8aff9ed73ed50b, type: 3}
+  rock: {fileID: 5323021281668342204, guid: 339ce7c53dd01b34d81d9c0c48b4e383, type: 3}
+  chunkObject: {fileID: 0}
+  ChunkContainer: {fileID: 0}
 --- !u!114 &2075908204
 MonoBehaviour:
   m_ObjectHideFlags: 0

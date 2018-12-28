@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4020859214957793171}
   - component: {fileID: 4198466010285967622}
   - component: {fileID: 5551395448711625606}
+  - component: {fileID: 2468230406584875589}
   m_Layer: 0
   m_Name: Potion
   m_TagString: Untagged
@@ -25,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9060611307730732994}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &4198466010285967622
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -117,9 +118,9 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: -2
-      outSlope: -2
+      value: -0.1
+      inSlope: -2.2
+      outSlope: -2.2
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -129,7 +130,34 @@ MonoBehaviour:
     m_RotationOrder: 4
   underhandCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.10355802
+      outSlope: 0.10355802
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4635083
+      value: 0.048
+      inSlope: -0.34711123
+      outSlope: -0.34711123
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.12887824
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.08947016
+      outSlope: -0.08947016
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -140,3 +168,17 @@ MonoBehaviour:
   overHand: 0
   potionExplode: {fileID: 1432356128850050297, guid: e77091a5c6aebd94fb7f3c589dc58e6d,
     type: 3}
+--- !u!114 &2468230406584875589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9060611307730732994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 13b5596373d54d04c9165947675a644b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: {x: 1, y: 10}
