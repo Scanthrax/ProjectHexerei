@@ -91,14 +91,14 @@ public class World : MonoBehaviour
 
 
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SaveController.instance.SaveGame();
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SaveController.instance.LoadGame();
-        }
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    SaveController.instance.SaveGame();
+        //}
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    SaveController.instance.LoadGame();
+        //}
 
     }
 

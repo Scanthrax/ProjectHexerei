@@ -10,12 +10,15 @@ public class Suck : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        ISuckable testInterface = collision.gameObject.GetComponent<ISuckable>();
-
-        if (testInterface != null)
+        if (vacuum.isSucking)
         {
-            print("I should be sucking!");
-            testInterface.Suck(vacuumTransform.position, vacuum.vacuumPower);
+            ISuckable testInterface = collision.gameObject.GetComponent<ISuckable>();
+
+            if (testInterface != null)
+            {
+                print("I should be sucking!");
+                testInterface.Suck(vacuumTransform.position, vacuum.vacuumPower);
+            }
         }
     }
 }

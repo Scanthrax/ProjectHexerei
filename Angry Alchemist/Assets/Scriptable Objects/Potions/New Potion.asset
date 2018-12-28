@@ -15,7 +15,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: 29854c3c95a45f440b7c9bf1cfebdd03, type: 3}
   plantMushCost: 3
-  mineralMushCost: 0
+  mineralMushCost: 1
   creatureMushCost: 0
   demonMushCost: 0
   type: 1

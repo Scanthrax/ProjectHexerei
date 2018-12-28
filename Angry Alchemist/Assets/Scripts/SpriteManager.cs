@@ -12,7 +12,7 @@ public class SpriteManager : MonoBehaviour
 
     public List<MushToSprite> mushToSprite;
 
-
+    public Sprite empty;
 
     Dictionary<string, Sprite> spriteDictionary;
 
