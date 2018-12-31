@@ -59,8 +59,8 @@ public class Potion : MonoBehaviour
 
     public void Explode()
     {
-        Instantiate(potionExplode, new Vector3(transform.position.x,0,transform.position.z), Quaternion.Euler(90,0,0));
-
+        var temp = Instantiate(potionExplode, new Vector3(transform.position.x,0,transform.position.z), Quaternion.Euler(90,0,0));
+        temp.GetComponent<SimpleAnimate>().potion = potion;
         foreach (var item in transform.GetComponents(typeof(Component)))
         {
             if (item.GetType() == typeof(AudioSource) || item.GetType() == typeof(Transform))

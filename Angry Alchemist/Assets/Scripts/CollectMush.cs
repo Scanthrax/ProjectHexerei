@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CollectMush : MonoBehaviour
 {
 
+    public VacuumTrigger vacuum;
+
     private void OnTriggerEnter(Collider collision)
     {
-        ISuckable temp = collision.GetComponent<ISuckable>();
-        if (temp != null)
+        if (vacuum.vacuumPower > 0.1f)
         {
-            temp.Consume();
+            ISuckable temp = collision.GetComponent<ISuckable>();
+            if (temp != null)
+            {
+                temp.Consume();
+            }
         }
     }
 }

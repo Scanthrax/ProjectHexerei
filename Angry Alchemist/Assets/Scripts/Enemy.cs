@@ -21,11 +21,11 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         health--;
         source.Play();
-        if (Random.Range(0, 3) == 0)
-        {
-            var temp = Instantiate(PlayerResource.instance.mush, transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), Quaternion.Euler(90f, 0, 0)).GetComponent<Mush>();
-            temp.Init(MushType.Creature);
-        }
+        //if (Random.Range(0, 3) == 0)
+        //{
+        //    var temp = Instantiate(PlayerResource.instance.mush, transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), Quaternion.Euler(90f, 0, 0)).GetComponent<Mush>();
+        //    temp.Init(MushType.Creature);
+        //}
 
 
         if (health <= 0)

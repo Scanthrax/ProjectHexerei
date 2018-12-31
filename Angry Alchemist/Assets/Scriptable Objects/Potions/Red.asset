@@ -11,9 +11,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 68240be190b24e44aa42fb7b2fe21612, type: 3}
-  m_Name: New Potion 1
+  m_Name: Red
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: 6c5b41dd45124b344a89c30b0c7bbff7, type: 3}
+  splash:
+  - {fileID: 21300000, guid: d0ad83a38bc4a424286d285af3112981, type: 3}
+  - {fileID: 21300000, guid: 6b4ebe15172485346a51c3da31c940c6, type: 3}
+  - {fileID: 21300000, guid: 7ee9b0de3dfc00041bd3126596b8ded5, type: 3}
+  - {fileID: 21300000, guid: 250cd3af9f593ce42aa5f19e03da8655, type: 3}
   plantMushCost: 3
   mineralMushCost: 0
   creatureMushCost: 0

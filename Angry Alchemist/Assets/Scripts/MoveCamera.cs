@@ -17,6 +17,13 @@ public class MoveCamera : MonoBehaviour
     public float AmountOftime;
     Vector3 startingPoint;
 
+    public Texture2D cursor;
+
+    private void Start()
+    {
+        //Cursor.SetCursor(cursor, new Vector2(cursor.width/2,cursor.height/2), CursorMode.Auto);
+    }
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.A))

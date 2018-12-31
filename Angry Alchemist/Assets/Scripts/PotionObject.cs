@@ -9,7 +9,7 @@ public enum DamageType { Normal, Acid, Fire, Electric, Water }
 public class PotionObject : ScriptableObject
 {
     public Sprite image;
-
+    public Sprite[] splash;
     public int plantMushCost;
     public int mineralMushCost;
     public int creatureMushCost;

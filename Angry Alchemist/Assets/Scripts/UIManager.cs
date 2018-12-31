@@ -7,6 +7,10 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
+
+    public AudioSource ErrorSource;
+    public AudioSource ActiveSource;
+
     private void Awake()
     {
         if (instance == null)

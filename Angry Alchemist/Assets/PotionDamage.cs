@@ -26,7 +26,7 @@ public class PotionDamage : MonoBehaviour
     {
         renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, newAlpha -= 0.01f);
 
-        if (newAlpha <= 0f)
+        if (newAlpha <= 0.2f)
             Destroy(gameObject);
     }
 

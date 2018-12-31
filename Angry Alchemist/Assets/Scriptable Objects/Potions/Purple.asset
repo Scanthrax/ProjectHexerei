@@ -11,9 +11,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 68240be190b24e44aa42fb7b2fe21612, type: 3}
-  m_Name: New Potion
+  m_Name: Purple
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: 29854c3c95a45f440b7c9bf1cfebdd03, type: 3}
+  splash:
+  - {fileID: 21300000, guid: 634a3d5413278fb46b8e8453853fb45e, type: 3}
+  - {fileID: 21300000, guid: df291027cbb4d5b49a95fea47fc980f9, type: 3}
+  - {fileID: 21300000, guid: 912b169be1551274c9142a6b12263156, type: 3}
+  - {fileID: 21300000, guid: 636b533ec5c05a848bc9661fce5ba74c, type: 3}
   plantMushCost: 3
   mineralMushCost: 1
   creatureMushCost: 0
