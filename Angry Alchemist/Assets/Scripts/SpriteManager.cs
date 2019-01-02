@@ -14,6 +14,8 @@ public class SpriteManager : MonoBehaviour
 
     public Sprite empty;
 
+    public Sprite corpse;
+
     Dictionary<string, Sprite> spriteDictionary;
 
     private void Awake()

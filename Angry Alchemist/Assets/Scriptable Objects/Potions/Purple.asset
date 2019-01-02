@@ -19,8 +19,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: df291027cbb4d5b49a95fea47fc980f9, type: 3}
   - {fileID: 21300000, guid: 912b169be1551274c9142a6b12263156, type: 3}
   - {fileID: 21300000, guid: 636b533ec5c05a848bc9661fce5ba74c, type: 3}
-  plantMushCost: 3
-  mineralMushCost: 1
+  plantMushCost: 0
+  mineralMushCost: 3
   creatureMushCost: 0
   demonMushCost: 0
   type: 1

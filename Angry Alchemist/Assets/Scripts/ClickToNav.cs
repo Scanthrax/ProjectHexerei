@@ -16,13 +16,13 @@ public class ClickToNav : MonoBehaviour
     }
     void Update()
     {
-        if (!Input.GetKey(KeyCode.LeftShift))
-        {
-            agent.isStopped = false;
-        }
-        else
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             agent.isStopped = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            agent.isStopped = false;
         }
 
         #region Left Mouse button hold

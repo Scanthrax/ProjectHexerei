@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bush : MonoBehaviour, IDamageable
+public class Bush : DamageableParent, IDamageable
 {
-    public float health;
-
     public void DealDamage()
     {
         health--;

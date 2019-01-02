@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class PotionSystem : MonoBehaviour
 {
@@ -260,9 +261,11 @@ public class PotionSystem : MonoBehaviour
 
     void InstantiatePotion(bool overhand, PotionObject potion)
     {
+        player.GetComponent<NavMeshAgent>().isStopped = true;
+
         potionLoaded = false;
         var pot = Instantiate(this.potion, player.transform.position, Quaternion.Euler(90, Random.value * 360f, 0)).GetComponent<Potion>();
-        pot.SetStartAndEnd(Camera.main.ScreenToWorldPoint(Input.mousePosition), overhand);
+        pot.SetStartAndEnd(Crosshair.instance.LimitedCrosshair.position, overhand);
         pot.potion = potion;
         whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
         whooshSource.Play();

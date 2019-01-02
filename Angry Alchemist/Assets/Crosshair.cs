@@ -8,7 +8,9 @@ public class Crosshair : MonoBehaviour
     Transform MouseCrosshair;
     public Transform LimitedCrosshair;
     public Transform player;
-    public float range;
+    float range;
+    public float baseRange;
+    public float rageRange;
 
     public static Crosshair instance;
 
@@ -27,6 +29,8 @@ public class Crosshair : MonoBehaviour
 
     void Update()
     {
+        range = baseRange + (rageRange * Player.instance.Rage);
+
         var MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         MousePosition = new Vector3(MousePosition.x, 0, MousePosition.z);
 

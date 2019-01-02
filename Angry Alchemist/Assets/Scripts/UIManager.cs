@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     public AudioSource ErrorSource;
     public AudioSource ActiveSource;
 
+    public Text PlayerHealthText;
+
     private void Awake()
     {
         if (instance == null)
