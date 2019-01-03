@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6617213878391321177}
   - component: {fileID: 5986766787891876680}
   - component: {fileID: 7522225638703610068}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6059151450104361844}
   - component: {fileID: 2840500136151122214}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

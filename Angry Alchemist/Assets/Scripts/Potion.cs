@@ -12,8 +12,8 @@ public class Potion : MonoBehaviour
     public AnimationCurve overhandCurve;
     public AnimationCurve underhandCurve;
 
+    public float speed;
 
-    public float time = 0f;
     public bool launchPotion = false;
     public bool overHand;
 
@@ -30,20 +30,27 @@ public class Potion : MonoBehaviour
     {
         if(launchPotion)
         {
-            transform.position += transform.forward * 0.1f;
+            transform.position += transform.forward * 0.1f * speed;
 
-            if (Vector3.Distance(transform.position, start) >= dist)
+            var tempDist = Vector3.Distance(transform.position, start);
+
+            if (tempDist >= dist) 
                 Explode();
+
+
+
+            if (overHand)
+            {
+                transform.localScale = Vector3.one + ((Vector3.one * 1f) * overhandCurve.Evaluate(tempDist / dist));
+            }
+            else
+            {
+                transform.localScale = Vector3.one + ((Vector3.one * 1f) * underhandCurve.Evaluate(tempDist/dist));
+            }
+
         }
 
-        //if(overHand)
-        //{
-        //    transform.localScale = Vector3.one + ((Vector3.one * 1f) * overhandCurve.Evaluate(time));
-        //}
-        //else
-        //{
-        //    transform.localScale = Vector3.one + ((Vector3.one * 1f) * underhandCurve.Evaluate(time));
-        //}
+
     }
 
 
@@ -58,6 +65,11 @@ public class Potion : MonoBehaviour
         transform.LookAt(end);
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
 
+        if(overHand)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Non-solid");
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,12 +81,20 @@ public class Potion : MonoBehaviour
     {
         var temp = Instantiate(potionExplode, new Vector3(transform.position.x,0,transform.position.z), Quaternion.Euler(90,0,0));
         temp.GetComponent<SimpleAnimate>().potion = potion;
+
         foreach (var item in transform.GetComponents(typeof(Component)))
         {
             if (item.GetType() == typeof(AudioSource) || item.GetType() == typeof(Transform))
                 continue;
             Destroy(item);
         }
+        foreach (var item in transform.GetComponentsInChildren(typeof(Component)))
+        {
+            if (item.GetType() == typeof(AudioSource) || item.GetType() == typeof(Transform))
+                continue;
+            Destroy(item);
+        }
+
         source.Play();
         Destroy(gameObject, source.clip.length);
     }

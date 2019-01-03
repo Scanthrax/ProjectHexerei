@@ -11,6 +11,8 @@ public class Mush : MonoBehaviour, ISuckable
     MushType type;
     AudioSource source;
 
+    bool spewing = false;
+
     public void Init(MushType type)
     {
         this.type = type;
@@ -25,7 +27,6 @@ public class Mush : MonoBehaviour, ISuckable
         switch(type)
         {
             case MushType.Plant:
-                print("consuming plant mush!!");
                 PlayerResource.instance.plantMush++;
                 UIManager.instance.plantMush.text = PlayerResource.instance.plantMush.ToString();
                 break;
@@ -37,6 +38,11 @@ public class Mush : MonoBehaviour, ISuckable
                 PlayerResource.instance.creatureMush++;
                 UIManager.instance.creatureMush.text = PlayerResource.instance.creatureMush.ToString();
                 break;
+            case MushType.Demon:
+                PlayerResource.instance.demonMush++;
+                UIManager.instance.demonMush.text = PlayerResource.instance.demonMush.ToString();
+                break;
+
             case MushType.Null:
                 print("Shouldn't be here!");
                 break;
@@ -57,8 +63,11 @@ public class Mush : MonoBehaviour, ISuckable
 
     public void Suck(Vector3 pos, float power)
     {
-        print("I am being sucked!");
-        transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * power);
+        if (!spewing)
+        {
+            print("I am being sucked!");
+            transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * power);
+        }
     }
 
 }

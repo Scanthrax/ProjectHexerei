@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
 
     public Text PlayerHealthText;
 
+    public Text plantMush, mineralMush, creatureMush, demonMush;
+
     private void Awake()
     {
         if (instance == null)
@@ -26,7 +28,8 @@ public class UIManager : MonoBehaviour
         plantMush.text = PlayerResource.instance.plantMush.ToString();
         mineralMush.text = PlayerResource.instance.mineralMush.ToString();
         creatureMush.text = PlayerResource.instance.creatureMush.ToString();
+        demonMush.text = PlayerResource.instance.demonMush.ToString();
     }
 
-    public Text plantMush, mineralMush, creatureMush;
+    
 }

@@ -16,7 +16,7 @@ public class PlayerResource : MonoBehaviour
             Destroy(this);
     }
 
-    public int plantMush, mineralMush, creatureMush;
+    public int plantMush, mineralMush, creatureMush, demonMush;
 
 
 

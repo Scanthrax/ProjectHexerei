@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4552592298069462034}
   - component: {fileID: 4628045312104123720}
   - component: {fileID: 8172841331917920138}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 5551395448711625606}
   - component: {fileID: 4930815032884694173}
   - component: {fileID: 7841487660595532121}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,12 +157,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0.5
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inSlope: -0.0065738084
+      outSlope: 0.01240014
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.89244556
+      outWeight: 0.94622266
     - serializedVersion: 3
       time: 1
       value: -0.1
@@ -208,9 +208,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  start: {x: 0, y: 0, z: 0}
-  end: {x: 0, y: 0, z: 0}
-  time: 0
+  speed: 1.5
   launchPotion: 0
   overHand: 0
   potionExplode: {fileID: 1432356128850050297, guid: e77091a5c6aebd94fb7f3c589dc58e6d,
