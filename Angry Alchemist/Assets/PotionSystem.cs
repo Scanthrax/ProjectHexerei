@@ -6,6 +6,9 @@ using UnityEngine.AI;
 
 public class PotionSystem : MonoBehaviour
 {
+    public static PotionSystem instance;
+
+
     Queue<DeliverySlots> DeliveryBelt = new Queue<DeliverySlots>(5);
 
     public PotionObject[] tempPotions;
@@ -16,9 +19,8 @@ public class PotionSystem : MonoBehaviour
 
     public Image potionSlot;
 
-    public PotionObject PotionInHand;
+    public PotionObject potionInHand;
 
-    public bool potionLoaded;
 
     public GameObject potion;
 
@@ -39,6 +41,7 @@ public class PotionSystem : MonoBehaviour
     public AnimationCurve MovePotions;
     public float MovePotionDuration;
 
+    public bool thrownPotion;
 
     public class DeliverySlots
     {
@@ -63,9 +66,27 @@ public class PotionSystem : MonoBehaviour
 
     Dictionary<int, PotionObject> numKeyToPotionDict = new Dictionary<int, PotionObject>();
 
+
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
+    }
+
+    /// <summary>
+    /// Is there a potion in hand?
+    /// </summary>
+    /// <returns></returns>
+    bool IsPotionLoaded()
+    {
+        return potionInHand != null;
+    }
+
     void Start()
     {
-        potionLoaded = false;
         playerResource = PlayerResource.instance;
 
 
@@ -73,8 +94,10 @@ public class PotionSystem : MonoBehaviour
         {
             numKeyToPotionDict.Add(i, null);
         }
+
         numKeyToPotionDict[1] = tempPotions[0];
         numKeyToPotionDict[2] = tempPotions[1];
+
 
         //DeliveryBelt.Enqueue(tempPotion);
 
@@ -164,22 +187,20 @@ public class PotionSystem : MonoBehaviour
         {
             #region Putting potion in hand
             // only attempt to load when we don't have a potion in hand
-            if (!potionLoaded)
+            if (!IsPotionLoaded())
             {
                 // we can only load if we have potions on the belt
                 if (DeliveryBelt.Count > 0)
                 {
-                    // we now have a potion in hand
-                    potionLoaded = true;
 
                     UIManager.instance.ActiveSource.Play();
                     // get the potion in the queue
                     var temp = DeliveryBelt.Dequeue();
 
-                    PotionInHand = temp.potion;
-                    print("Holding " + PotionInHand.name);
+                    potionInHand = temp.potion;
+                    print("Holding " + potionInHand.name);
                     // put the potion's sprite in the slot
-                    potionSlot.sprite = PotionInHand.image;
+                    potionSlot.sprite = potionInHand.image;
 
                     //// iterate through the queue by converting it to an array
                     //var array = DeliveryBelt.ToArray();
@@ -208,24 +229,24 @@ public class PotionSystem : MonoBehaviour
             #endregion
         }
 
-        if (potionLoaded)
+        if (IsPotionLoaded())
         {
             #region Mouse scroll up
             if (Input.mouseScrollDelta.y > 0f)
             {
                 print("overhand throw");
-                InstantiatePotion(true, PotionInHand);
+                InstantiatePotion(true, potionInHand);
                 potionSlot.sprite = SpriteManager.instance.empty;
-                PotionInHand = null;
+                potionInHand = null;
             }
             #endregion
             #region Mouse Scroll down
             else if (Input.mouseScrollDelta.y < 0f)
             {
                 print("underhand");
-                InstantiatePotion(false, PotionInHand);
+                InstantiatePotion(false, potionInHand);
                 potionSlot.sprite = SpriteManager.instance.empty;
-                PotionInHand = null;
+                potionInHand = null;
             }
             #endregion
         }
@@ -261,10 +282,10 @@ public class PotionSystem : MonoBehaviour
 
     void InstantiatePotion(bool overhand, PotionObject potion)
     {
-        player.GetComponent<NavMeshAgent>().isStopped = true;
+        //player.GetComponent<NavMeshAgent>().isStopped = true;
+        //thrownPotion = true;
 
-        potionLoaded = false;
-        var pot = Instantiate(this.potion, player.transform.position, Quaternion.Euler(90, Random.value * 360f, 0)).GetComponent<Potion>();
+        var pot = Instantiate(this.potion, player.transform.position, Quaternion.Euler(90,0,0)).GetComponent<Potion>();
         pot.SetStartAndEnd(Crosshair.instance.LimitedCrosshair.position, overhand);
         pot.potion = potion;
         whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);

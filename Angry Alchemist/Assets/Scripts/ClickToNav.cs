@@ -25,6 +25,11 @@ public class ClickToNav : MonoBehaviour
             agent.isStopped = false;
         }
 
+        if(Input.GetMouseButtonUp(0))
+        {
+            PotionSystem.instance.thrownPotion = false;
+        }
+
         #region Left Mouse button hold
         if (Input.GetMouseButton(0))
         {
@@ -33,6 +38,7 @@ public class ClickToNav : MonoBehaviour
             temp = new Vector3(temp.x, 0, temp.z);
             agent.SetDestination(temp);
             #endregion
+
         }
         #endregion
 

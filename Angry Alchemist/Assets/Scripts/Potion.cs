@@ -6,10 +6,12 @@ public class Potion : MonoBehaviour
 {
     public PotionObject potion;
 
+    Vector3 start, end;
+    float dist;
+
     public AnimationCurve overhandCurve;
     public AnimationCurve underhandCurve;
 
-    public Vector3 start,end;
 
     public float time = 0f;
     public bool launchPotion = false;
@@ -21,29 +23,27 @@ public class Potion : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = potion.image;
+        GetComponentInChildren<SpriteRenderer>().sprite = potion.image;
         source = GetComponent<AudioSource>();
     }
     void Update()
     {
         if(launchPotion)
         {
-            transform.position = Vector3.Lerp(start, end, time += Time.deltaTime);
+            transform.position += transform.forward * 0.1f;
+
+            if (Vector3.Distance(transform.position, start) >= dist)
+                Explode();
         }
 
-        if(overHand)
-        {
-            transform.localScale = Vector3.one + ((Vector3.one * 1f) * overhandCurve.Evaluate(time));
-        }
-        else
-        {
-            transform.localScale = Vector3.one + ((Vector3.one * 1f) * underhandCurve.Evaluate(time));
-        }
-
-        if (time >= 1f)
-        {
-            Explode();
-        }
+        //if(overHand)
+        //{
+        //    transform.localScale = Vector3.one + ((Vector3.one * 1f) * overhandCurve.Evaluate(time));
+        //}
+        //else
+        //{
+        //    transform.localScale = Vector3.one + ((Vector3.one * 1f) * underhandCurve.Evaluate(time));
+        //}
     }
 
 
@@ -51,11 +51,19 @@ public class Potion : MonoBehaviour
     {
         start = transform.position;
         this.end = end;
+        dist = Vector3.Distance(start, end);
         launchPotion = true;
         this.overHand = overHand;
+
+        transform.LookAt(end);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        Explode();
+    }
 
     public void Explode()
     {

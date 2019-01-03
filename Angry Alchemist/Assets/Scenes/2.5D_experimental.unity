@@ -1974,7 +1974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1420ca01bc8e664f9ac3afaae6d9d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 149
   maxCorpseHealth: 0
   damage: 0
   attackSpeed: 0
@@ -1983,7 +1983,7 @@ MonoBehaviour:
   health: 100
   corpseHealth: 0
   rageBar: {fileID: 1404930731}
-  Rage: 0
+  Rage: 0.479
 --- !u!114 &877307607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3275,7 +3275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1549869454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3971,8 +3971,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0465c202aa02cb34fa51226212f5bb34, type: 2}
   - {fileID: 11400000, guid: 43444ddbf15d2bc4aa49e2260912277b, type: 2}
   potionSlot: {fileID: 952421323}
-  PotionInHand: {fileID: 0}
-  potionLoaded: 0
+  potionInHand: {fileID: 0}
   potion: {fileID: 9060611307730732994, guid: 17d547dd2a6835e4fa371bc1a15ed777, type: 3}
   whooshSource: {fileID: 1026962148}
   loadPotionSource: {fileID: 0}
@@ -4008,6 +4007,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   MovePotionDuration: 1
+  thrownPotion: 0
 --- !u!1 &2106214717
 GameObject:
   m_ObjectHideFlags: 0
