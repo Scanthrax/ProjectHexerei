@@ -19,5 +19,6 @@ public class DamageableParent : MonoBehaviour
     public void DealDamage(int damage)
     {
         health -= damage;
+        Spew.instance.SpewThings(UIManager.instance.combatText, transform.position, 1);
     }
 }

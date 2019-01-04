@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
 
     public Text plantMush, mineralMush, creatureMush, demonMush;
 
+    public GameObject combatText;
+
     private void Awake()
     {
         if (instance == null)
