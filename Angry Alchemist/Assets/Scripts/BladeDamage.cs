@@ -11,12 +11,12 @@ public class BladeDamage : MonoBehaviour
     {
         if (VacuumTrigger.instance.vacuumPower > 0.1f && ba.DamageTick)
         {
-            IDamageable testInterface = collision.gameObject.GetComponent<IDamageable>();
+            DamageableParent testInterface = collision.gameObject.GetComponent<DamageableParent>();
 
             if (testInterface != null)
             {
                 print("dealing damage!");
-                testInterface.DealDamage();
+                testInterface.DealDamage(1);
             }
 
             ChopMush chop = collision.GetComponent<ChopMush>();
