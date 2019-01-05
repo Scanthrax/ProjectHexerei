@@ -45,6 +45,7 @@ public class Demon : DamageableParent, IDamageable
             //Destroy(gameObject, source.clip.length);
 
             Destroy(agent);
+            Player.instance.ReduceRage(3f);
 
             alive = false;
             sprite.sprite = SpriteManager.instance.corpse;

@@ -43,10 +43,20 @@ public class PotionSystem : MonoBehaviour
 
     public bool thrownPotion;
 
+
+
+    public GameObject timerTextObject;
+
     public class DeliverySlots
     {
         public PotionObject potion;
         public Transform deliveryBeltTransform;
+
+        public Text textTimer;
+
+        public float timer;
+
+
 
         public DeliverySlots(PotionObject pot)
         {
@@ -80,7 +90,7 @@ public class PotionSystem : MonoBehaviour
     /// Is there a potion in hand?
     /// </summary>
     /// <returns></returns>
-    bool IsPotionLoaded()
+    public bool IsPotionLoaded()
     {
         return potionInHand != null;
     }
@@ -97,6 +107,8 @@ public class PotionSystem : MonoBehaviour
 
         numKeyToPotionDict[1] = tempPotions[0];
         numKeyToPotionDict[2] = tempPotions[1];
+        numKeyToPotionDict[3] = tempPotions[2];
+        numKeyToPotionDict[4] = tempPotions[3];
 
 
         //DeliveryBelt.Enqueue(tempPotion);
@@ -105,6 +117,8 @@ public class PotionSystem : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         numberKey = 0;
+
+        UIManager.instance.SetText();
     }
 
 
@@ -138,10 +152,14 @@ public class PotionSystem : MonoBehaviour
                     // get the costs of the potion
                     int mushCost = numKeyToPotionDict[numberKey].plantMushCost;
                     int mineralCost = numKeyToPotionDict[numberKey].mineralMushCost;
+                    int creatureCost = numKeyToPotionDict[numberKey].creatureMushCost;
+                    int demonCost = numKeyToPotionDict[numberKey].demonMushCost;
 
                     // if we have the appropriate amount of resources, continue on
                     if (mushCost <= playerResource.plantMush &&
-                        mineralCost <= playerResource.mineralMush)
+                        mineralCost <= playerResource.mineralMush &&
+                        creatureCost <= playerResource.creatureMush &&
+                        demonCost <= playerResource.demonMush)
                     {
                         UIManager.instance.ActiveSource.Play();
                         print("potion has been crafted!");
@@ -149,6 +167,8 @@ public class PotionSystem : MonoBehaviour
                         // consume the costs
                         playerResource.plantMush -= mushCost;
                         playerResource.mineralMush -= mineralCost;
+                        playerResource.creatureMush -= creatureCost;
+                        playerResource.demonMush -= demonCost;
 
                         // set the UI text for the mush
                         UIManager.instance.SetText();
@@ -159,8 +179,12 @@ public class PotionSystem : MonoBehaviour
                         temp.deliveryBeltTransform.SetParent(slots[DeliveryBelt.Count].parent);
                         temp.deliveryBeltTransform.position = slots[DeliveryBelt.Count].position;
                         temp.deliveryBeltTransform.GetComponent<Image>().sprite = temp.potion.image;
+                        var textObject = Instantiate(timerTextObject, temp.deliveryBeltTransform);
+                        temp.textTimer = textObject.GetComponent<Text>();
                         // put the gameobject in queue
                         DeliveryBelt.Enqueue(temp);
+
+                        temp.timer = temp.potion.craftTime;
 
                     }
                     else
@@ -192,28 +216,36 @@ public class PotionSystem : MonoBehaviour
                 // we can only load if we have potions on the belt
                 if (DeliveryBelt.Count > 0)
                 {
+                    if (DeliveryBelt.Peek().timer <= 0f)
+                    {
 
-                    UIManager.instance.ActiveSource.Play();
-                    // get the potion in the queue
-                    var temp = DeliveryBelt.Dequeue();
+                        UIManager.instance.ActiveSource.Play();
+                        // get the potion in the queue
+                        var temp = DeliveryBelt.Dequeue();
 
-                    potionInHand = temp.potion;
-                    print("Holding " + potionInHand.name);
-                    // put the potion's sprite in the slot
-                    potionSlot.sprite = potionInHand.image;
+                        potionInHand = temp.potion;
+                        print("Holding " + potionInHand.name);
+                        // put the potion's sprite in the slot
+                        potionSlot.sprite = potionInHand.image;
 
-                    //// iterate through the queue by converting it to an array
-                    //var array = DeliveryBelt.ToArray();
-                    //for (int i = 0; i < DeliveryBelt.Count; i++)
-                    //{
-                    //    //print(i + array[i].potion.name);
-                    //    // the position of each potion will shift to the right one slot
-                    //    array[i].deliveryBeltTransform.position = slots[i].position;
-                    //}
+                        //// iterate through the queue by converting it to an array
+                        //var array = DeliveryBelt.ToArray();
+                        //for (int i = 0; i < DeliveryBelt.Count; i++)
+                        //{
+                        //    //print(i + array[i].potion.name);
+                        //    // the position of each potion will shift to the right one slot
+                        //    array[i].deliveryBeltTransform.position = slots[i].position;
+                        //}
 
-                    ShiftPotions();
+                        ShiftPotions();
 
-                    temp.DestroyGO();
+                        temp.DestroyGO();
+                    }
+                    else
+                    {
+                        print("Potion is not ready yet!");
+                        UIManager.instance.ErrorSource.Play();
+                    }
                 }
                 else
                 {
@@ -227,7 +259,8 @@ public class PotionSystem : MonoBehaviour
                 UIManager.instance.ErrorSource.Play();
             }
             #endregion
-        }
+
+            }
 
         if (IsPotionLoaded())
         {
@@ -253,8 +286,6 @@ public class PotionSystem : MonoBehaviour
 
 
 
-
-
         //if (potionLoaded)
         //{
         //    if (playerResource.plantMush >= PotionInHand.plantMushCost)
@@ -277,6 +308,18 @@ public class PotionSystem : MonoBehaviour
         //        }
         //    }
         //}
+
+
+        var array = DeliveryBelt.ToArray();
+        for (int i = 0; i < DeliveryBelt.Count; i++)
+        {
+            if (array[i].timer >= 0f)
+            {
+                array[i].timer -= Time.deltaTime;
+                array[i].textTimer.GetComponent<Text>().text = array[i].timer.ToString() ;
+            }
+        }
+
     }
 
 

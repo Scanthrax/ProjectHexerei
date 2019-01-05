@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Spew : MonoBehaviour
 {
+    #region Singleton
     public static Spew instance;
-
-    public Transform canvas;
 
     private void Awake()
     {
@@ -15,6 +14,12 @@ public class Spew : MonoBehaviour
         else
             Destroy(this);
     }
+    #endregion
+
+
+    public Transform canvas;
+
+
 
     public void SpewThings(GameObject go, Vector3 position,int amount)
     {

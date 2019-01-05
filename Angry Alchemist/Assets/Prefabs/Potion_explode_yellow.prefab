@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8283862243187839262}
   - component: {fileID: 1156311601026580362}
-  - component: {fileID: 4212403890488231803}
   - component: {fileID: 1154587567568864500}
   - component: {fileID: 5034832264535047896}
+  - component: {fileID: 6375154047611087756}
   m_Layer: 0
-  m_Name: Potion_explode
+  m_Name: Potion_explode_yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 504718533
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 636b533ec5c05a848bc9661fce5ba74c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 833fa1dbf283b21458809c81aa7744a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -82,25 +82,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4212403890488231803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1432356128850050297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: d4620879c55a8454ebfb683f82739d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frames:
-  - {fileID: 21300000, guid: 636b533ec5c05a848bc9661fce5ba74c, type: 3}
-  - {fileID: 21300000, guid: 912b169be1551274c9142a6b12263156, type: 3}
-  - {fileID: 21300000, guid: df291027cbb4d5b49a95fea47fc980f9, type: 3}
-  - {fileID: 21300000, guid: 634a3d5413278fb46b8e8453853fb45e, type: 3}
-  framesPerSecond: 10
 --- !u!65 &1154587567568864500
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -127,3 +108,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e595b3cef7f9e54eb3b096d0b5fc295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6375154047611087756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432356128850050297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: d4620879c55a8454ebfb683f82739d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  framesPerSecond: 10
+  splash:
+  - {fileID: 21300000, guid: 833fa1dbf283b21458809c81aa7744a5, type: 3}
+  - {fileID: 21300000, guid: 8dd4c45970688fe4ba5ef8064267cffd, type: 3}
+  - {fileID: 21300000, guid: 71b320cbcf5be874db56fceb6d7de18f, type: 3}
+  - {fileID: 21300000, guid: 6ee7f4efc27fcfa4790aa9fc17df6160, type: 3}

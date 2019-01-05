@@ -9,7 +9,6 @@ public enum DamageType { Normal, Acid, Fire, Electric, Water }
 public class PotionObject : ScriptableObject
 {
     public Sprite image;
-    public Sprite[] splash;
     public int plantMushCost;
     public int mineralMushCost;
     public int creatureMushCost;
@@ -21,5 +20,7 @@ public class PotionObject : ScriptableObject
     public float duration;
     [Tooltip("The amount of time (in seconds) it takes to craft this potion")]
     public float craftTime;
-    public Collider2D areaOfEffect;
+    public GameObject potionSplash;
+
+    public Sprite reticle;
 }

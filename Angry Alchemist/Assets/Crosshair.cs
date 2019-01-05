@@ -14,6 +14,8 @@ public class Crosshair : MonoBehaviour
 
     public static Crosshair instance;
 
+    public Transform aimReticle;
+
     private void Awake()
     {
         if (instance == null)
@@ -29,12 +31,15 @@ public class Crosshair : MonoBehaviour
 
     void Update()
     {
-        range = baseRange + (rageRange * Player.instance.Rage);
+        range = baseRange + (rageRange * Player.instance.rageUnitInterval);
 
         var MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+        
+
         MousePosition = new Vector3(MousePosition.x, 0, MousePosition.z);
 
-        MouseCrosshair.position = MousePosition;
+        
 
         //mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //var allowedPos = mousePos - initialPos;
@@ -45,6 +50,28 @@ public class Crosshair : MonoBehaviour
         allowedPos = Vector3.ClampMagnitude(allowedPos, range);
 
         LimitedCrosshair.transform.position = player.position + allowedPos;
+
+        // dark crosshair
+        MouseCrosshair.position = MousePosition;
+
+
+
+        if (PotionSystem.instance.IsPotionLoaded())
+        {
+            aimReticle.gameObject.SetActive(true);
+            aimReticle.position = LimitedCrosshair.position;
+            aimReticle.GetComponent<SpriteRenderer>().sprite = PotionSystem.instance.potionInHand.reticle;
+        }
+        else
+            aimReticle.gameObject.SetActive(false);
+
+
+        
+
+
+
+
+
 
 
     }
