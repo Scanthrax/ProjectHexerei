@@ -79,8 +79,8 @@ public class Potion : MonoBehaviour
 
     public void Explode()
     {
-        var temp = Instantiate(potionExplode, new Vector3(transform.position.x,0,transform.position.z), Quaternion.Euler(90,0,0));
-        temp.GetComponent<SimpleAnimate>().potion = potion;
+        var temp = Instantiate(potion.potionSplash, new Vector3(transform.position.x,0,transform.position.z), Quaternion.Euler(90,0,0));
+        //temp.GetComponent<SimpleAnimate>().potion = potion;
 
         foreach (var item in transform.GetComponents(typeof(Component)))
         {

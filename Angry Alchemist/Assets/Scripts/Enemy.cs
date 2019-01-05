@@ -29,6 +29,7 @@ public class Enemy : DamageableParent, IDamageable
 
         if (health <= 0)
         {
+            Player.instance.ReduceRage(2f);
 
             foreach (var item in transform.GetComponents(typeof(Component)))
             {

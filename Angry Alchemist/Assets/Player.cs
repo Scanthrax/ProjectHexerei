@@ -9,8 +9,12 @@ public class Player : DamageableParent
 
     public RectTransform rageBar;
 
-    [Range(0f,1f)]
-    public float Rage;
+    const float barWidth = 643f;
+
+    public float rage;
+    const float maxRage = 1800f;
+
+    public float rageUnitInterval { get { return rage / maxRage; } }
 
     private void Awake()
     {
@@ -23,16 +27,23 @@ public class Player : DamageableParent
     private void Start()
     {
         SetHealthText();
+        rage = maxRage;
     }
 
     private void Update()
     {
-        rageBar.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Rage * 643f);
+        rageBar.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, rageUnitInterval * barWidth);
 
+        rage -= Time.deltaTime;
     }
     public void SetHealthText()
     {
         UIManager.instance.PlayerHealthText.text = health.ToString();
+    }
+
+    public void ReduceRage(float reduction)
+    {
+        rage -= reduction;
     }
 
 }

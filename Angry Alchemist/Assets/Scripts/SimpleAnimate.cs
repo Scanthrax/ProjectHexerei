@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SimpleAnimate : MonoBehaviour
 {
-    public PotionObject potion;
     public float framesPerSecond = 10;
     SpriteRenderer renderer;
+    public Sprite[] splash;
 
     private void Start()
     {
@@ -15,7 +15,7 @@ public class SimpleAnimate : MonoBehaviour
 
     void Update()
     {
-        int index = Mathf.RoundToInt(Time.time * framesPerSecond) % potion.splash.Length;
-        renderer.sprite = potion.splash[index];
+        int index = Mathf.RoundToInt(Time.time * framesPerSecond) % splash.Length;
+        renderer.sprite = splash[index];
     }
 }

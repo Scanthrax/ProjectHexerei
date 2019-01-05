@@ -11,18 +11,18 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 68240be190b24e44aa42fb7b2fe21612, type: 3}
-  m_Name: Red
+  m_Name: Yellow
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 6c5b41dd45124b344a89c30b0c7bbff7, type: 3}
+  image: {fileID: 21300000, guid: b30c2c9460761f740b2d9fa4d6dc18b8, type: 3}
   plantMushCost: 0
   mineralMushCost: 0
-  creatureMushCost: 0
-  demonMushCost: 4
-  type: 1
+  creatureMushCost: 3
+  demonMushCost: 0
+  type: 0
   initDamage: {x: 2, y: 3}
   damageOverTime: {x: 1, y: 3}
   duration: 4
   craftTime: 2
-  potionSplash: {fileID: 3986388971821559668, guid: 327810ef1c7677d4bb9a3652537fbdd6,
+  potionSplash: {fileID: 1432356128850050297, guid: 6891424369299fe4d9faad17fec8761d,
     type: 3}
-  reticle: {fileID: 21300000, guid: ed332e996b037b54cbd80c2f19534ed4, type: 3}
+  reticle: {fileID: 21300000, guid: 17bb58184ff2edb4d8f46a7fe73c226b, type: 3}
