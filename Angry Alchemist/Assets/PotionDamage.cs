@@ -8,10 +8,10 @@ public class PotionDamage : MonoBehaviour
     float newAlpha;
     private void OnTriggerStay(Collider other)
     {
-        IDamageable temp = other.GetComponent<IDamageable>();
+        DamageableParent temp = other.GetComponent<DamageableParent>();
         if(temp != null)
         {
-            temp.DealDamage();
+            temp.DealDamage(1);
         }
     }
 

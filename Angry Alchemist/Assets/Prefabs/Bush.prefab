@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88630d7151951864b9f9e51bc5a23062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 10
   maxCorpseHealth: 0
   damage: 0
   attackSpeed: 0
@@ -119,6 +119,7 @@ MonoBehaviour:
   moveSpeed: 0
   health: 8
   corpseHealth: 0
+  alive: 0
 --- !u!114 &8790936047129084241
 MonoBehaviour:
   m_ObjectHideFlags: 0

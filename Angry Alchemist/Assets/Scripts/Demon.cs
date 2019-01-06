@@ -8,7 +8,6 @@ public class Demon : DamageableParent
     public AudioSource source;
     Transform player;
     public NavMeshAgent agent;
-    public bool alive;
     public SpriteRenderer sprite;
     private void Start()
     {
@@ -22,46 +21,7 @@ public class Demon : DamageableParent
 
     }
 
-    //public void DealDamage()
-    //{
-    //    health--;
-    //    source.Play();
-    //    //if (Random.Range(0, 3) == 0)
-    //    //{
-    //    //    var temp = Instantiate(PlayerResource.instance.mush, transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), Quaternion.Euler(90f, 0, 0)).GetComponent<Mush>();
-    //    //    temp.Init(MushType.Creature);
-    //    //}
-
-
-    //    if (health <= 0)
-    //    {
-
-    //        //foreach (var item in transform.GetComponents(typeof(Component)))
-    //        //{
-    //        //    if (item.GetType() == typeof(AudioSource) || item.GetType() == typeof(Transform))
-    //        //        continue;
-    //        //    Destroy(item);
-    //        //}
-    //        //Destroy(gameObject, source.clip.length);
-
-    //        Destroy(agent);
-
-    //        alive = false;
-    //        sprite.sprite = SpriteManager.instance.corpse;
-    //        //agent.isStopped = true;
-    //    }
-
-    //    if(health <= -maxCorpseHealth)
-    //    {
-    //        foreach (var item in transform.GetComponents(typeof(Component)))
-    //        {
-    //            if (item.GetType() == typeof(AudioSource) || item.GetType() == typeof(Transform))
-    //                continue;
-    //            Destroy(item);
-    //        }
-    //        Destroy(gameObject, source.clip.length);
-    //    }
-    //}
+    
 
 
     private void Update()
