@@ -4,22 +4,42 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 
+/// <summary>
+/// This class is responsible for handling the potion crafting logic during exploration.
+/// The player will be crafting potions from the mush stored in the muschmaschine.
+/// </summary>
 public class PotionSystem : MonoBehaviour
 {
+    /// <summary>
+    /// The singleton instance of this class
+    /// </summary>
     public static PotionSystem instance;
 
-
+    /// <summary>
+    /// The delivery belt will the potions that are queued up for the player
+    /// </summary>
     Queue<DeliverySlots> DeliveryBelt = new Queue<DeliverySlots>(5);
 
-    public PotionObject[] tempPotions;
+    /// <summary>
+    /// These are the potions that the player will be able to craft
+    /// </summary>
+    public PotionObject[] recipes;
 
+    /// <summary>
+    /// A reference to the PlayerResource class
+    /// </summary>
     PlayerResource playerResource;
 
-
-
+    /// <summary>
+    /// The image that displays which potion is currently in our hand
+    /// </summary>
     public Image potionSlot;
 
+    /// <summary>
+    /// The potion that is currently in our hand
+    /// </summary>
     public PotionObject potionInHand;
+
 
 
     public GameObject potion;
@@ -43,7 +63,7 @@ public class PotionSystem : MonoBehaviour
 
     public bool thrownPotion;
 
-    public bool overHandThrow;
+    public bool handThrow;
 
     public GameObject timerTextObject;
 
@@ -73,7 +93,7 @@ public class PotionSystem : MonoBehaviour
         }
     }
 
-    int numberKey;
+    int potionSlotKey;
 
     Dictionary<int, PotionObject> numKeyToPotionDict = new Dictionary<int, PotionObject>();
 
@@ -88,10 +108,10 @@ public class PotionSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Is there a potion in hand?
+    /// Returns true if the player currently has a potion in their hand
     /// </summary>
     /// <returns></returns>
-    public bool isPotionLoaded
+    public bool IsPotionInHand
     {
         get
         {
@@ -109,10 +129,10 @@ public class PotionSystem : MonoBehaviour
             numKeyToPotionDict.Add(i, null);
         }
 
-        numKeyToPotionDict[1] = tempPotions[0];
-        numKeyToPotionDict[2] = tempPotions[1];
-        numKeyToPotionDict[3] = tempPotions[2];
-        numKeyToPotionDict[4] = tempPotions[3];
+        numKeyToPotionDict[1] = recipes[0];
+        numKeyToPotionDict[2] = recipes[1];
+        numKeyToPotionDict[3] = recipes[2];
+        numKeyToPotionDict[4] = recipes[3];
 
 
         //DeliveryBelt.Enqueue(tempPotion);
@@ -120,56 +140,64 @@ public class PotionSystem : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        numberKey = 0;
+        potionSlotKey = 0;
 
-        UIManager.instance.SetText();
+        UIManager.instance.SetMushTubesText();
     }
 
 
     void Update()
     {
-        #region Toggle overhand vs underhand
 
+
+
+        #region Toggle overhand vs underhand with Tab
+        // if we press tab...
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            overHandThrow = !overHandThrow;
-            var temp = overHandThrow ? "Overhand" : "Underhand";
-            print(temp);
-        }
+            // toggle the overhand boolean, which will influence how the player throws potions
+            handThrow = !handThrow;
 
+            // debug print the state we just toggled to
+            print(handThrow ? "Overhand" : "Underhand");
+        }
         #endregion
 
 
-        #region Capture which number key have we pressed this frame
+        #region Capture which potion slot key have we pressed this frame
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            numberKey = 1;
+            potionSlotKey = 1;
         else if (Input.GetKeyDown(KeyCode.Alpha2))
-            numberKey = 2;
+            potionSlotKey = 2;
         else if (Input.GetKeyDown(KeyCode.Alpha3))
-            numberKey = 3;
+            potionSlotKey = 3;
         else if (Input.GetKeyDown(KeyCode.Alpha4))
-            numberKey = 4;
+            potionSlotKey = 4;
         else if (Input.GetKeyDown(KeyCode.Alpha5))
-            numberKey = 5;
+            potionSlotKey = 5;
         else
             // a value of 0 means no num key has been pressed
-            numberKey = 0;
+            potionSlotKey = 0;
         #endregion
 
-        // if we press a number key...
-        if (numberKey != 0)
+        #region Attemp to craft potion if slot has been pressed
+        // if we press a potion slot key...
+        if (potionSlotKey != 0)
         {
             // Only craft potions when the queue is under 5 potions
             if (DeliveryBelt.Count < 5)
             {
+                // get the potion that is mapped to the potion slot
+                var potion = numKeyToPotionDict[potionSlotKey];
+
                 // if there is a potion assigned to the number slot...
-                if (numKeyToPotionDict[numberKey] != null)
+                if (potion != null)
                 {
                     // get the costs of the potion
-                    int mushCost = numKeyToPotionDict[numberKey].plantMushCost;
-                    int mineralCost = numKeyToPotionDict[numberKey].mineralMushCost;
-                    int creatureCost = numKeyToPotionDict[numberKey].creatureMushCost;
-                    int demonCost = numKeyToPotionDict[numberKey].demonMushCost;
+                    int mushCost = potion.plantMushCost;
+                    int mineralCost = potion.mineralMushCost;
+                    int creatureCost = potion.creatureMushCost;
+                    int demonCost = potion.demonMushCost;
 
                     // if we have the appropriate amount of resources, continue on
                     if (mushCost <= playerResource.plantMush &&
@@ -177,20 +205,25 @@ public class PotionSystem : MonoBehaviour
                         creatureCost <= playerResource.creatureMush &&
                         demonCost <= playerResource.demonMush)
                     {
+                        // play an audio cue to indicate that we are crafting a potion
                         UIManager.instance.ActiveSource.Play();
-                        print("potion has been crafted!");
+                        print("crafting potion!");
 
-                        // consume the costs
+                        // consume the costs that we gathered above
                         playerResource.plantMush -= mushCost;
                         playerResource.mineralMush -= mineralCost;
                         playerResource.creatureMush -= creatureCost;
                         playerResource.demonMush -= demonCost;
 
-                        // set the UI text for the mush
-                        UIManager.instance.SetText();
+                        // set the UI text for the mush tubes
+                        UIManager.instance.SetMushTubesText();
+
+
+
 
                         // hold a temp variable so we can manipulate & add to the delivery belt
-                        DeliverySlots temp = new DeliverySlots(numKeyToPotionDict[numberKey]);
+                        DeliverySlots temp = new DeliverySlots(potion);
+
                         // set up the gameobject for the potion on the belt
                         temp.deliveryBeltTransform.SetParent(slots[DeliveryBelt.Count].parent);
                         temp.deliveryBeltTransform.position = slots[DeliveryBelt.Count].position;
@@ -221,30 +254,28 @@ public class PotionSystem : MonoBehaviour
                 UIManager.instance.ErrorSource.Play();
             }
         }
+        #endregion
 
 
-        if (isPotionLoaded)
+
+        // do we have a potion in our hand?
+        if (IsPotionInHand)
         {
-            #region Mouse scroll up
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                //print("overhand throw");
-                InstantiatePotion(overHandThrow, potionInHand);
+                // create a potion object
+                InstantiatePotion(handThrow, potionInHand);
+                // make the sprite empty since we no longer have a potion in our hand
                 potionSlot.sprite = SpriteManager.instance.empty;
+                // set potion in hand to null
                 potionInHand = null;
+                // we have just thrown a potion. this bool is used to prevent us from loading in another potion,
+                // since spacebar is used for loading a potion into our hand & also to launch the potion
                 thrownPotion = true;
             }
-            #endregion
-            //#region Mouse Scroll down
-            //else if (Input.mouseScrollDelta.y < 0f)
-            //{
-            //    print("underhand");
-            //    InstantiatePotion(false, potionInHand);
-            //    potionSlot.sprite = SpriteManager.instance.empty;
-            //    potionInHand = null;
-            //}
-            //#endregion
         }
+
+
 
         if (!thrownPotion)
         {
@@ -252,7 +283,7 @@ public class PotionSystem : MonoBehaviour
             {
                 #region Putting potion in hand
                 // only attempt to load when we don't have a potion in hand
-                if (!isPotionLoaded)
+                if (!IsPotionInHand)
                 {
                     // we can only load if we have potions on the belt
                     if (DeliveryBelt.Count > 0)
@@ -301,6 +332,7 @@ public class PotionSystem : MonoBehaviour
                 //}
                 #endregion
 
+                thrownPotion = false;
             }
 
 
@@ -342,21 +374,23 @@ public class PotionSystem : MonoBehaviour
             }
         }
 
-        thrownPotion = false;
+
     }
 
-
+    /// <summary>
+    /// Creates a potion gameobject.  We pass in a bool that indicates whether we are throwing overhand vs underhand.
+    /// We also pass in the potion so the gameobject can acquire the potion's attributes.
+    /// </summary>
+    /// <param name="overhand"></param>
+    /// <param name="potion"></param>
     void InstantiatePotion(bool overhand, PotionObject potion)
     {
-        //player.GetComponent<NavMeshAgent>().isStopped = true;
-        //thrownPotion = true;
 
         var pot = Instantiate(this.potion, player.transform.position, Quaternion.Euler(90,0,0)).GetComponent<Potion>();
         pot.SetStartAndEnd(Crosshair.instance.LimitedCrosshair.position, overhand);
         pot.potion = potion;
         whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
         whooshSource.Play();
-        //pot.GetComponent<SpriteRenderer>().sprite = potion.image;
     }
 
 

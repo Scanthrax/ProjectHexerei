@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
             Destroy(this);
     }
 
-    public void SetText()
+    public void SetMushTubesText()
     {
         plantMush.text = PlayerResource.instance.plantMush.ToString();
         mineralMush.text = PlayerResource.instance.mineralMush.ToString();

@@ -52,7 +52,7 @@ public class Crosshair : MonoBehaviour
         
         
 
-        if (!PotionSystem.instance.overHandThrow)
+        if (!PotionSystem.instance.handThrow)
         {
             LimitedCrosshair.transform.position = player.position + (player.right * range);
 
@@ -79,7 +79,7 @@ public class Crosshair : MonoBehaviour
 
 
 
-        if (PotionSystem.instance.isPotionLoaded)
+        if (PotionSystem.instance.IsPotionInHand)
         {
             aimReticle.gameObject.SetActive(true);
             aimReticle.position = LimitedCrosshair.position;
