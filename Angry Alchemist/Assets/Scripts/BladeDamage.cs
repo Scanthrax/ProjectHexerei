@@ -22,7 +22,7 @@ public class BladeDamage : MonoBehaviour
             ChopMush chop = collision.GetComponent<ChopMush>();
             if(chop != null)
             {
-                if (Random.Range(0, chop.chance) == 0)
+                if (Random.value * 100f <= chop.percent)
                 {
                     var temp = Instantiate(PlayerResource.instance.mush, transform.position + new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)), Quaternion.Euler(90f, 0, 0)).GetComponent<Mush>();
                     temp.Init(chop.mush);
@@ -32,8 +32,8 @@ public class BladeDamage : MonoBehaviour
 
         }
 
-        Rock rock = collision.GetComponent<Rock>();
         Shake shake = collision.GetComponent<Shake>();
+        AudioSource source = collision.GetComponent<AudioSource>();
 
         if (VacuumTrigger.instance.vacuumPower > 0.1f)
         {
@@ -43,19 +43,19 @@ public class BladeDamage : MonoBehaviour
                     shake.shake = true;
             }
 
-            if (rock != null)
+            if ( source != null)
             {
-                if (!rock.source.isPlaying)
-                    rock.source.Play();
+                if (!source.isPlaying)
+                    source.Play();
 
             }
         }
         else
         {
-            if (rock != null)
+            if (source != null)
             {
-                if (rock.source.isPlaying)
-                    rock.source.Stop();
+                if (source.isPlaying)
+                    source.Stop();
 
             }
 
@@ -91,10 +91,10 @@ public class BladeDamage : MonoBehaviour
             shake.shake = false;
         }
 
-        Rock rock = other.GetComponent<Rock>();
-        if (rock != null)
+        AudioSource source = other.GetComponent<AudioSource>();
+        if (source != null)
         {
-            rock.source.Stop();
+            source.Stop();
         }
     }
 }

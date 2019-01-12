@@ -6,5 +6,5 @@ public class ChopMush : MonoBehaviour
 {
     public MushType mush;
 
-    public int chance;
+    public int percent;
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3380567422039291080}
   - component: {fileID: 6786933502783970134}
   - component: {fileID: 1884135908290840314}
-  - component: {fileID: 5251915851573099725}
+  - component: {fileID: 584795452964173749}
   - component: {fileID: 8790936047129084241}
   m_Layer: 8
   m_Name: Bush
@@ -98,7 +98,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.43
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5251915851573099725
+--- !u!114 &584795452964173749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,18 +108,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 88630d7151951864b9f9e51bc5a23062, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a92caff16f1ff145844271171dceec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  maxCorpseHealth: 0
-  damage: 0
-  attackSpeed: 0
-  attackRange: 0
-  moveSpeed: 0
-  health: 8
-  corpseHealth: 0
-  alive: 0
+  maxHealth: 12
+  health: 0
 --- !u!114 &8790936047129084241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mush: 1
-  chance: 5
+  percent: 18
 --- !u!1 &7973868456476565514
 GameObject:
   m_ObjectHideFlags: 0

@@ -277,12 +277,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 6
+  health: 6
   maxCorpseHealth: 6
   damage: 1
   attackSpeed: 1
   attackRange: 2
   moveSpeed: 2
-  health: 6
   corpseHealth: 6
   alive: 1
   source: {fileID: 3390493046415191505}
@@ -397,4 +397,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mush: 3
-  chance: 5
+  percent: 18

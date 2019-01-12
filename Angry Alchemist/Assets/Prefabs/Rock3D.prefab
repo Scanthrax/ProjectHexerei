@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3380567422039291080}
   - component: {fileID: 7502465759630892363}
   - component: {fileID: 6786933502783970134}
-  - component: {fileID: 6617213878391321177}
   - component: {fileID: 5986766787891876680}
   - component: {fileID: 7522225638703610068}
+  - component: {fileID: 5997594222162775427}
   m_Layer: 8
   m_Name: Rock3D
   m_TagString: Untagged
@@ -78,7 +78,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5323021281668342204}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.82, y: 1, z: 0.6}
@@ -97,22 +97,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &6617213878391321177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5323021281668342204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: df8196a1e2c1a3449bcce9ad81886c8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 0}
 --- !u!82 &5986766787891876680
 AudioSource:
   m_ObjectHideFlags: 0
@@ -223,7 +209,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mush: 2
-  chance: 10
+  percent: 5
+--- !u!114 &5997594222162775427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323021281668342204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 0a92caff16f1ff145844271171dceec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  health: 0
 --- !u!1 &7973868456476565514
 GameObject:
   m_ObjectHideFlags: 0

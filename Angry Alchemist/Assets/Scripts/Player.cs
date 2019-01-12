@@ -46,4 +46,17 @@ public class Player : DamageableParent
         rage -= reduction;
     }
 
+    protected override void CheckForDeath()
+    {
+        //throw new System.NotImplementedException();
+    }
+    public override void DealDamage(int damage)
+    {
+        // reduce the health
+        health -= damage;
+        // spew the floating combat text
+        Spew.instance.SpewThings(UIManager.instance.combatText, transform.position, 1, damage, Color.red);
+
+        CheckForDeath();
+    }
 }

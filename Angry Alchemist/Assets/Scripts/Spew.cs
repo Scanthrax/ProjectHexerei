@@ -22,13 +22,15 @@ public class Spew : MonoBehaviour
 
 
 
-    public void SpewThings(GameObject go, Vector3 position,int amount, int damage)
+    public void SpewThings(GameObject go, Vector3 position,int amount, int damage, Color color)
     {
         for (int i = 0; i < amount; i++)
         {
             var temp = Instantiate(go, position, Quaternion.Euler(90,0,0), canvas);
             temp.GetComponent<Rigidbody>().AddForce((Random.value * 300f) - 150f, 0, 100f);
-            temp.GetComponent<Text>().text = damage.ToString();
+            var temp2 = temp.GetComponent<Text>();
+            temp2.text = damage.ToString();
+            temp2.color = color;
         }
     }
 }

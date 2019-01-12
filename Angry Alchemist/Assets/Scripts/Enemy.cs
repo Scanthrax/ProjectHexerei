@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : DamageableParent
+public class Enemy : EnemyParent
 {
     public AudioSource source;
     Transform player;
@@ -20,7 +20,6 @@ public class Enemy : DamageableParent
 
     private void Update()
     {
-
         if (alive)
         {
             var dist = Vector3.Distance(transform.position, player.position);

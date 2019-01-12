@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Demon : DamageableParent
+public class Demon : EnemyParent
 {
     public AudioSource source;
     Transform player;

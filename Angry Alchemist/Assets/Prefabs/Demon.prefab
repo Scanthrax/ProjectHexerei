@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mush: 4
-  chance: 5
+  percent: 15
 --- !u!114 &8244222178505114406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,12 +280,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  health: 10
   maxCorpseHealth: 10
   damage: 3
   attackSpeed: 14
   attackRange: 2
   moveSpeed: 2.5
-  health: 10
   corpseHealth: 10
   alive: 1
   source: {fileID: 0}

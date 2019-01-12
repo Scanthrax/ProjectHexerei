@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 16080650}
   - component: {fileID: 16080651}
   - component: {fileID: 16080653}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,7 +694,7 @@ GameObject:
   - component: {fileID: 247152025}
   - component: {fileID: 247152026}
   - component: {fileID: 247152027}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Suck Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 589344360}
   - component: {fileID: 589344362}
   - component: {fileID: 589344363}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sawblade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2249,7 +2249,7 @@ GameObject:
   - component: {fileID: 1026962148}
   - component: {fileID: 877307611}
   - component: {fileID: 877307606}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2384,14 +2384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 149
-  maxCorpseHealth: 0
-  damage: 0
-  attackSpeed: 0
-  attackRange: 0
-  moveSpeed: 0
   health: 100
-  corpseHealth: 0
-  alive: 0
   rageBar: {fileID: 1404930731}
   rage: 0
 --- !u!114 &877307607
@@ -2766,6 +2759,9 @@ MonoBehaviour:
   baseRange: 5
   rageRange: 7
   aimReticle: {fileID: 363318775}
+  layermask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!4 &991454181
 Transform:
   m_ObjectHideFlags: 0
@@ -2935,7 +2931,7 @@ GameObject:
   - component: {fileID: 1027262721}
   - component: {fileID: 1027262722}
   - component: {fileID: 1027262723}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Vacuum Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3701,6 +3697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   demon: {fileID: 4849750515046645491, guid: 15a518cd95ddb7e45a390a06dd91233e, type: 3}
+  secondsBetweenSpawns: 3
 --- !u!212 &1549869455
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4440,5 +4437,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   MovePotionDuration: 1
   thrownPotion: 0
+  overHandThrow: 0
   timerTextObject: {fileID: 6801744865873440804, guid: 52e1f0fe5a5a34146985defdc7c09626,
     type: 3}

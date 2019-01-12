@@ -43,9 +43,10 @@ public class PotionSystem : MonoBehaviour
 
     public bool thrownPotion;
 
-
+    public bool overHandThrow;
 
     public GameObject timerTextObject;
+
 
     public class DeliverySlots
     {
@@ -90,9 +91,12 @@ public class PotionSystem : MonoBehaviour
     /// Is there a potion in hand?
     /// </summary>
     /// <returns></returns>
-    public bool IsPotionLoaded()
+    public bool isPotionLoaded
     {
-        return potionInHand != null;
+        get
+        {
+            return potionInHand != null;
+        }
     }
 
     void Start()
@@ -124,6 +128,18 @@ public class PotionSystem : MonoBehaviour
 
     void Update()
     {
+        #region Toggle overhand vs underhand
+
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            overHandThrow = !overHandThrow;
+            var temp = overHandThrow ? "Overhand" : "Underhand";
+            print(temp);
+        }
+
+        #endregion
+
+
         #region Capture which number key have we pressed this frame
         if (Input.GetKeyDown(KeyCode.Alpha1))
             numberKey = 1;
@@ -207,119 +223,126 @@ public class PotionSystem : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (isPotionLoaded)
         {
-            #region Putting potion in hand
-            // only attempt to load when we don't have a potion in hand
-            if (!IsPotionLoaded())
+            #region Mouse scroll up
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                // we can only load if we have potions on the belt
-                if (DeliveryBelt.Count > 0)
+                //print("overhand throw");
+                InstantiatePotion(overHandThrow, potionInHand);
+                potionSlot.sprite = SpriteManager.instance.empty;
+                potionInHand = null;
+                thrownPotion = true;
+            }
+            #endregion
+            //#region Mouse Scroll down
+            //else if (Input.mouseScrollDelta.y < 0f)
+            //{
+            //    print("underhand");
+            //    InstantiatePotion(false, potionInHand);
+            //    potionSlot.sprite = SpriteManager.instance.empty;
+            //    potionInHand = null;
+            //}
+            //#endregion
+        }
+
+        if (!thrownPotion)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                #region Putting potion in hand
+                // only attempt to load when we don't have a potion in hand
+                if (!isPotionLoaded)
                 {
-                    if (DeliveryBelt.Peek().timer <= 0f)
+                    // we can only load if we have potions on the belt
+                    if (DeliveryBelt.Count > 0)
                     {
+                        if (DeliveryBelt.Peek().timer <= 0f)
+                        {
 
-                        UIManager.instance.ActiveSource.Play();
-                        // get the potion in the queue
-                        var temp = DeliveryBelt.Dequeue();
+                            UIManager.instance.ActiveSource.Play();
+                            // get the potion in the queue
+                            var temp = DeliveryBelt.Dequeue();
 
-                        potionInHand = temp.potion;
-                        print("Holding " + potionInHand.name);
-                        // put the potion's sprite in the slot
-                        potionSlot.sprite = potionInHand.image;
+                            potionInHand = temp.potion;
+                            print("Holding " + potionInHand.name);
+                            // put the potion's sprite in the slot
+                            potionSlot.sprite = potionInHand.image;
 
-                        //// iterate through the queue by converting it to an array
-                        //var array = DeliveryBelt.ToArray();
-                        //for (int i = 0; i < DeliveryBelt.Count; i++)
-                        //{
-                        //    //print(i + array[i].potion.name);
-                        //    // the position of each potion will shift to the right one slot
-                        //    array[i].deliveryBeltTransform.position = slots[i].position;
-                        //}
+                            //// iterate through the queue by converting it to an array
+                            //var array = DeliveryBelt.ToArray();
+                            //for (int i = 0; i < DeliveryBelt.Count; i++)
+                            //{
+                            //    //print(i + array[i].potion.name);
+                            //    // the position of each potion will shift to the right one slot
+                            //    array[i].deliveryBeltTransform.position = slots[i].position;
+                            //}
 
-                        ShiftPotions();
+                            ShiftPotions();
 
-                        temp.DestroyGO();
+                            temp.DestroyGO();
+                        }
+                        else
+                        {
+                            print("Potion is not ready yet!");
+                            UIManager.instance.ErrorSource.Play();
+                        }
                     }
                     else
                     {
-                        print("Potion is not ready yet!");
+                        print("Delivery belt is empty!");
                         UIManager.instance.ErrorSource.Play();
                     }
                 }
-                else
+                //else
+                //{
+                //    print("We already have a potion in hand!");
+                //    UIManager.instance.ErrorSource.Play();
+                //}
+                #endregion
+
+            }
+
+
+
+
+
+            //if (potionLoaded)
+            //{
+            //    if (playerResource.plantMush >= PotionInHand.plantMushCost)
+            //    {
+            //        if (Input.mouseScrollDelta.y > 0f)
+            //        {
+            //            print("overhand");
+            //            InstantiatePotion(true, PotionInHand);
+            //            potionSlot.sprite = empty;
+            //            whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
+            //            whooshSource.Play();
+            //        }
+            //        else if (Input.mouseScrollDelta.y < 0f)
+            //        {
+            //            print("underhand");
+            //            InstantiatePotion(false, PotionInHand);
+            //            potionSlot.sprite = empty;
+            //            whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
+            //            whooshSource.Play();
+            //        }
+            //    }
+            //}
+
+
+            var array = DeliveryBelt.ToArray();
+            for (int i = 0; i < DeliveryBelt.Count; i++)
+            {
+                if (array[i].timer >= 0f)
                 {
-                    print("Delivery belt is empty!");
-                    UIManager.instance.ErrorSource.Play();
+                    array[i].timer -= Time.deltaTime;
+                    array[i].textTimer.GetComponent<Text>().text = array[i].timer.ToString();
                 }
             }
-            else
-            {
-                print("We already have a potion in hand!");
-                UIManager.instance.ErrorSource.Play();
-            }
-            #endregion
-
-            }
-
-        if (IsPotionLoaded())
-        {
-            #region Mouse scroll up
-            if (Input.mouseScrollDelta.y > 0f)
-            {
-                print("overhand throw");
-                InstantiatePotion(true, potionInHand);
-                potionSlot.sprite = SpriteManager.instance.empty;
-                potionInHand = null;
-            }
-            #endregion
-            #region Mouse Scroll down
-            else if (Input.mouseScrollDelta.y < 0f)
-            {
-                print("underhand");
-                InstantiatePotion(false, potionInHand);
-                potionSlot.sprite = SpriteManager.instance.empty;
-                potionInHand = null;
-            }
-            #endregion
         }
 
-
-
-        //if (potionLoaded)
-        //{
-        //    if (playerResource.plantMush >= PotionInHand.plantMushCost)
-        //    {
-        //        if (Input.mouseScrollDelta.y > 0f)
-        //        {
-        //            print("overhand");
-        //            InstantiatePotion(true, PotionInHand);
-        //            potionSlot.sprite = empty;
-        //            whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
-        //            whooshSource.Play();
-        //        }
-        //        else if (Input.mouseScrollDelta.y < 0f)
-        //        {
-        //            print("underhand");
-        //            InstantiatePotion(false, PotionInHand);
-        //            potionSlot.sprite = empty;
-        //            whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
-        //            whooshSource.Play();
-        //        }
-        //    }
-        //}
-
-
-        var array = DeliveryBelt.ToArray();
-        for (int i = 0; i < DeliveryBelt.Count; i++)
-        {
-            if (array[i].timer >= 0f)
-            {
-                array[i].timer -= Time.deltaTime;
-                array[i].textTimer.GetComponent<Text>().text = array[i].timer.ToString() ;
-            }
-        }
-
+        thrownPotion = false;
     }
 
 

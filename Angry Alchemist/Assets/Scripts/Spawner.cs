@@ -5,6 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject demon;
+    public int secondsBetweenSpawns;
+
 
     void Spawn()
     {
@@ -18,7 +20,7 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
-        if (Time.frameCount % 150 == 0)
+        if (Time.frameCount % (secondsBetweenSpawns * 60) == 0)
             Spawn();
     }
 }

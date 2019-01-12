@@ -16,6 +16,8 @@ public class Crosshair : MonoBehaviour
 
     public Transform aimReticle;
 
+    public LayerMask layermask;
+
     private void Awake()
     {
         if (instance == null)
@@ -39,24 +41,45 @@ public class Crosshair : MonoBehaviour
 
         MousePosition = new Vector3(MousePosition.x, 0, MousePosition.z);
 
-        
+
 
         //mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //var allowedPos = mousePos - initialPos;
         //allowedPos = Vector3.ClampMagnitude(allowedPos, 2.0);
         //transform.position = initialPos + allowedPos;
 
-        var allowedPos = MousePosition - player.position;
-        allowedPos = Vector3.ClampMagnitude(allowedPos, range);
 
-        LimitedCrosshair.transform.position = player.position + allowedPos;
+        
+        
+
+        if (!PotionSystem.instance.overHandThrow)
+        {
+            LimitedCrosshair.transform.position = player.position + (player.right * range);
+
+            RaycastHit hit;
+            if (Physics.Raycast(player.position, player.right, out hit, range,layermask)) 
+            {
+                LimitedCrosshair.transform.position = hit.point;
+            }
+        }
+        else
+        {
+            #region calculate short crosshair
+            var allowedPos = MousePosition - player.position;
+            allowedPos = Vector3.ClampMagnitude(allowedPos, range);
+            LimitedCrosshair.transform.position = player.position + allowedPos;
+            #endregion
+        }
+
+
+
 
         // dark crosshair
         MouseCrosshair.position = MousePosition;
 
 
 
-        if (PotionSystem.instance.IsPotionLoaded())
+        if (PotionSystem.instance.isPotionLoaded)
         {
             aimReticle.gameObject.SetActive(true);
             aimReticle.position = LimitedCrosshair.position;
