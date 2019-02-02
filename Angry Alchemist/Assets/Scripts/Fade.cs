@@ -18,7 +18,7 @@ public class Fade : MonoBehaviour
 
     private void Update()
     {
-        renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, newAlpha -= 0.06f);
+        renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, newAlpha -= 0.03f);
 
         if (newAlpha <= 0f)
             Destroy(gameObject);

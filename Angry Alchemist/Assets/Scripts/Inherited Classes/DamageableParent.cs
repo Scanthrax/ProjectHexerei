@@ -54,7 +54,7 @@ public class DamageableParent : MonoBehaviour
         // reduce the health
         health -= damage;
         // spew the floating combat text
-        Spew.instance.SpewThings(UIManager.instance.combatText, transform.position, 1,damage,Color.gray);
+        Spew.instance.SpewThings(UIManager.instance.combatText, transform.position, 1,damage,Color.yellow);
 
         CheckForDeath();
     }

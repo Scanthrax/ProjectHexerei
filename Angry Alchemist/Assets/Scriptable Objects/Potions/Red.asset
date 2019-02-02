@@ -17,7 +17,7 @@ MonoBehaviour:
   plantMushCost: 0
   mineralMushCost: 0
   creatureMushCost: 0
-  demonMushCost: 4
+  demonMushCost: 1
   type: 1
   initDamage: {x: 2, y: 3}
   damageOverTime: {x: 1, y: 3}
