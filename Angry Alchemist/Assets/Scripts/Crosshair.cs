@@ -79,11 +79,11 @@ public class Crosshair : MonoBehaviour
 
 
 
-        if (PotionSystem.instance.IsPotionInHand)
+        if (PotionSystem.instance.isPotionInHand)
         {
             aimReticle.gameObject.SetActive(true);
             aimReticle.position = LimitedCrosshair.position;
-            aimReticle.GetComponent<SpriteRenderer>().sprite = PotionSystem.instance.potionInHand.reticle;
+            aimReticle.GetComponent<SpriteRenderer>().sprite = PotionSystem.instance.handSlot.potion.reticle;
         }
         else
             aimReticle.gameObject.SetActive(false);

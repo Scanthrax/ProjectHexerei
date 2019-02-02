@@ -95,6 +95,9 @@ public class Potion : MonoBehaviour
             Destroy(item);
         }
 
+
+        ViewportManager.instance.ShakeScreen(0.4f);
+
         source.Play();
         Destroy(gameObject, source.clip.length);
     }

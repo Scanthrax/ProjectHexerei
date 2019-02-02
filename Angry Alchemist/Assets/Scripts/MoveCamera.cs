@@ -6,7 +6,7 @@ public class MoveCamera : MonoBehaviour
 {
     public Transform player;
     public float speed = 5f;
-
+    Transform cameraPivot;
     public Vector2[] dist = new Vector2[2];
 
 
@@ -22,31 +22,15 @@ public class MoveCamera : MonoBehaviour
     private void Start()
     {
         //Cursor.SetCursor(cursor, new Vector2(cursor.width/2,cursor.height/2), CursorMode.Auto);
+
+        cameraPivot = transform.parent;
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.position += Vector3.left * speed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position += Vector3.right * speed;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            //transform.position += Vector3.up * speed;
-            transform.position += Vector3.forward * speed;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            //transform.position += Vector3.down * speed;
-            transform.position += Vector3.back * speed;
-        }
 
 
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, player.position.x - dist[0].x, player.position.x + dist[0].y), transform.position.y, Mathf.Clamp(transform.position.z, player.position.z - dist[1].x, player.position.z + dist[1].y));
+        cameraPivot.position = new Vector3(Mathf.Clamp(cameraPivot.position.x, player.position.x - dist[0].x, player.position.x + dist[0].y), cameraPivot.position.y, Mathf.Clamp(cameraPivot.position.z, player.position.z - dist[1].x, player.position.z + dist[1].y));
 
         if (Input.GetMouseButtonDown(2))
         {
@@ -59,7 +43,7 @@ public class MoveCamera : MonoBehaviour
             time += Time.deltaTime;
             var ratio = Mathf.Min( time / AmountOftime, 1f);
 
-            transform.position = Vector3.Lerp(
+            cameraPivot.position = Vector3.Lerp(
                 new Vector3(startingPoint.x, startingPoint.y, startingPoint.z),
                 new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z),
                 ratio);

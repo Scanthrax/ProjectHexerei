@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using System.Linq;
+using System;
 
 /// <summary>
 /// This class is responsible for handling the potion crafting logic during exploration.
@@ -16,9 +18,9 @@ public class PotionSystem : MonoBehaviour
     public static PotionSystem instance;
 
     /// <summary>
-    /// The delivery belt will the potions that are queued up for the player
+    /// The delivery belt will hold the potions that are queued up for the player
     /// </summary>
-    Queue<DeliverySlots> DeliveryBelt = new Queue<DeliverySlots>(5);
+    Queue<UIPotion> deliveryBelt = new Queue<UIPotion>(5);
 
     /// <summary>
     /// These are the potions that the player will be able to craft
@@ -35,10 +37,7 @@ public class PotionSystem : MonoBehaviour
     /// </summary>
     public Image potionSlot;
 
-    /// <summary>
-    /// The potion that is currently in our hand
-    /// </summary>
-    public PotionObject potionInHand;
+
 
 
 
@@ -48,74 +47,57 @@ public class PotionSystem : MonoBehaviour
     public AudioSource whooshSource;
     public AudioSource loadPotionSource;
 
-
-    public Transform[] slots;
-
     Transform player;
 
     public Transform potionContainerBelt { get; }
 
 
-    public PotionObject potion2;
-
     public AnimationCurve MovePotions;
+
     public float MovePotionDuration;
 
     public bool thrownPotion;
 
     public bool handThrow;
 
-    public GameObject timerTextObject;
 
 
-    public class DeliverySlots
-    {
-        public PotionObject potion;
-        public Transform deliveryBeltTransform;
+    public UIPotionSlot handSlot;
+    public UIHotkeySlot[] hotkeySlots;
+    public UIPotionSlot[] deliveryBeltSlots;
 
-        public Text textTimer;
-
-        public float timer;
-
-
-
-        public DeliverySlots(PotionObject pot)
-        {
-            potion = pot;
-            deliveryBeltTransform = new GameObject("test",typeof(Image)).transform;
-        }
-
-        
-
-        public void DestroyGO()
-        {
-            Destroy(deliveryBeltTransform.gameObject);
-        }
-    }
 
     int potionSlotKey;
+    int autoPotionKey;
 
-    Dictionary<int, PotionObject> numKeyToPotionDict = new Dictionary<int, PotionObject>();
+    Dictionary<int, UIHotkeySlot> numKeyToPotionDict = new Dictionary<int, UIHotkeySlot>();
 
+
+    Queue<PotionObject> craftTimes = new Queue<PotionObject>(6);
+    float craftTimer = 0f;
+    PotionObject craftPotion = null;
+    int amountOfPotions = 0;
 
 
     private void Awake()
     {
+        #region Singleton
         if (instance == null)
             instance = this;
         else
             Destroy(this);
+        #endregion
     }
 
     /// <summary>
     /// Returns true if the player currently has a potion in their hand
     /// </summary>
     /// <returns></returns>
-    public bool IsPotionInHand
+    public bool isPotionInHand
     {
         get
         {
-            return potionInHand != null;
+            return handSlot.potion != null;
         }
     }
 
@@ -124,23 +106,25 @@ public class PotionSystem : MonoBehaviour
         playerResource = PlayerResource.instance;
 
 
-        for (int i = 1; i <= 5; i++)
+        for (int i = 0; i < hotkeySlots.Length; i++)
         {
-            numKeyToPotionDict.Add(i, null);
+            numKeyToPotionDict.Add(hotkeySlots[i].mapping, hotkeySlots[i]);
+
+            if(i != 4)
+            {
+                var temp = ObjectPooler.instance.SpawnFromPool(PoolType.UIPotion, Vector3.zero, Quaternion.identity).GetComponent<UIPotion>();
+                temp.Initialize(recipes[i]);
+                hotkeySlots[i].PutPotionInSlot(temp);
+            }
+
         }
-
-        numKeyToPotionDict[1] = recipes[0];
-        numKeyToPotionDict[2] = recipes[1];
-        numKeyToPotionDict[3] = recipes[2];
-        numKeyToPotionDict[4] = recipes[3];
-
-
-        //DeliveryBelt.Enqueue(tempPotion);
-
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         potionSlotKey = 0;
+        autoPotionKey = 0;
+
+        Array.Reverse(deliveryBeltSlots);
 
         UIManager.instance.SetMushTubesText();
     }
@@ -153,7 +137,7 @@ public class PotionSystem : MonoBehaviour
 
         #region Toggle overhand vs underhand with Tab
         // if we press tab...
-        if(Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             // toggle the overhand boolean, which will influence how the player throws potions
             handThrow = !handThrow;
@@ -180,24 +164,101 @@ public class PotionSystem : MonoBehaviour
             potionSlotKey = 0;
         #endregion
 
+
+        CraftPotion(potionSlotKey);
+
+
+        CraftPotion(autoPotionKey);
+        autoPotionKey = 0;
+
+
+        if(craftTimer > 0f)
+        {
+            craftTimer -= Time.deltaTime;
+        }
+        else
+        {
+            if(craftPotion != null)
+            {
+                UIManager.instance.ActiveSource.Play();
+
+
+                // only attempt to load when we don't have a potion in hand
+                if (!isPotionInHand)
+                {
+                    var temp = ObjectPooler.instance.SpawnFromPool(PoolType.UIPotion, handSlot.transform.position, Quaternion.identity).GetComponent<UIPotion>();
+                    temp.Initialize(craftPotion);
+                    handSlot.PutPotionInSlot(temp);
+                }
+                else
+                {
+
+                    var temp = ObjectPooler.instance.SpawnFromPool(PoolType.UIPotion, deliveryBeltSlots[deliveryBelt.Count].transform.position, Quaternion.identity).GetComponent<UIPotion>();
+                    temp.transform.SetParent(deliveryBeltSlots[deliveryBelt.Count].transform.parent);
+                    temp.Initialize(craftPotion);
+                    deliveryBelt.Enqueue(temp);
+                }
+            }
+
+            if (craftTimes.Count > 0)
+            {
+                var temp = craftTimes.Dequeue();
+                craftTimer = temp.craftTime;
+                craftPotion = temp;
+            }
+            else
+            {
+                craftPotion = null;
+            }
+        }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // do we have a potion in our hand?
+            if (isPotionInHand)
+            {
+
+                // create a potion object
+                InstantiatePotion(handThrow, handSlot.potion);
+                // make the sprite empty since we no longer have a potion in our hand
+                ObjectPooler.instance.DespawnFromPool(PoolType.UIPotion, handSlot.uiPotion.gameObject);
+                // set potion in hand to null
+                if (deliveryBelt.Count > 0)
+                    handSlot.PutPotionInSlot(deliveryBelt.Dequeue());
+                else
+                    handSlot.GetPotionFromSlot();
+            }
+            else
+            {
+                print("We do not have a potion in hand!");
+                UIManager.instance.ErrorSource.Play();
+            }
+        }
+    }
+
+
+    void CraftPotion(int key)
+    {
         #region Attemp to craft potion if slot has been pressed
         // if we press a potion slot key...
-        if (potionSlotKey != 0)
+        if (numKeyToPotionDict.ContainsKey(key) && numKeyToPotionDict[key].potion != null)
         {
             // Only craft potions when the queue is under 5 potions
-            if (DeliveryBelt.Count < 5)
+            if (amountOfPotions < 6)
             {
                 // get the potion that is mapped to the potion slot
-                var potion = numKeyToPotionDict[potionSlotKey];
+                var potion = numKeyToPotionDict[key];
 
                 // if there is a potion assigned to the number slot...
                 if (potion != null)
                 {
                     // get the costs of the potion
-                    int mushCost = potion.plantMushCost;
-                    int mineralCost = potion.mineralMushCost;
-                    int creatureCost = potion.creatureMushCost;
-                    int demonCost = potion.demonMushCost;
+                    int mushCost = potion.potion.plantMushCost;
+                    int mineralCost = potion.potion.mineralMushCost;
+                    int creatureCost = potion.potion.creatureMushCost;
+                    int demonCost = potion.potion.demonMushCost;
 
                     // if we have the appropriate amount of resources, continue on
                     if (mushCost <= playerResource.plantMush &&
@@ -218,22 +279,23 @@ public class PotionSystem : MonoBehaviour
                         // set the UI text for the mush tubes
                         UIManager.instance.SetMushTubesText();
 
+                        craftTimes.Enqueue(potion.potion);
+                        amountOfPotions++;
+                        
 
+                        //// hold a temp variable so we can manipulate & add to the delivery belt
+                        //DeliverySlots temp = new DeliverySlots(potion.potion);
 
+                        //// set up the gameobject for the potion on the belt
+                        //temp.deliveryBeltTransform.SetParent(slots[DeliveryBelt.Count].parent);
+                        //temp.deliveryBeltTransform.position = slots[DeliveryBelt.Count].position;
+                        //temp.deliveryBeltTransform.GetComponent<Image>().sprite = temp.potion.image;
+                        //var textObject = Instantiate(timerTextObject, temp.deliveryBeltTransform);
+                        //temp.textTimer = textObject.GetComponent<Text>();
+                        //// put the gameobject in queue
+                        //DeliveryBelt.Enqueue(temp);
 
-                        // hold a temp variable so we can manipulate & add to the delivery belt
-                        DeliverySlots temp = new DeliverySlots(potion);
-
-                        // set up the gameobject for the potion on the belt
-                        temp.deliveryBeltTransform.SetParent(slots[DeliveryBelt.Count].parent);
-                        temp.deliveryBeltTransform.position = slots[DeliveryBelt.Count].position;
-                        temp.deliveryBeltTransform.GetComponent<Image>().sprite = temp.potion.image;
-                        var textObject = Instantiate(timerTextObject, temp.deliveryBeltTransform);
-                        temp.textTimer = textObject.GetComponent<Text>();
-                        // put the gameobject in queue
-                        DeliveryBelt.Enqueue(temp);
-
-                        temp.timer = temp.potion.craftTime;
+                        //temp.timer = temp.potion.craftTime;
 
                     }
                     else
@@ -255,127 +317,8 @@ public class PotionSystem : MonoBehaviour
             }
         }
         #endregion
-
-
-
-        // do we have a potion in our hand?
-        if (IsPotionInHand)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                // create a potion object
-                InstantiatePotion(handThrow, potionInHand);
-                // make the sprite empty since we no longer have a potion in our hand
-                potionSlot.sprite = SpriteManager.instance.empty;
-                // set potion in hand to null
-                potionInHand = null;
-                // we have just thrown a potion. this bool is used to prevent us from loading in another potion,
-                // since spacebar is used for loading a potion into our hand & also to launch the potion
-                thrownPotion = true;
-            }
-        }
-
-
-
-        if (!thrownPotion)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                #region Putting potion in hand
-                // only attempt to load when we don't have a potion in hand
-                if (!IsPotionInHand)
-                {
-                    // we can only load if we have potions on the belt
-                    if (DeliveryBelt.Count > 0)
-                    {
-                        if (DeliveryBelt.Peek().timer <= 0f)
-                        {
-
-                            UIManager.instance.ActiveSource.Play();
-                            // get the potion in the queue
-                            var temp = DeliveryBelt.Dequeue();
-
-                            potionInHand = temp.potion;
-                            print("Holding " + potionInHand.name);
-                            // put the potion's sprite in the slot
-                            potionSlot.sprite = potionInHand.image;
-
-                            //// iterate through the queue by converting it to an array
-                            //var array = DeliveryBelt.ToArray();
-                            //for (int i = 0; i < DeliveryBelt.Count; i++)
-                            //{
-                            //    //print(i + array[i].potion.name);
-                            //    // the position of each potion will shift to the right one slot
-                            //    array[i].deliveryBeltTransform.position = slots[i].position;
-                            //}
-
-                            ShiftPotions();
-
-                            temp.DestroyGO();
-                        }
-                        else
-                        {
-                            print("Potion is not ready yet!");
-                            UIManager.instance.ErrorSource.Play();
-                        }
-                    }
-                    else
-                    {
-                        print("Delivery belt is empty!");
-                        UIManager.instance.ErrorSource.Play();
-                    }
-                }
-                //else
-                //{
-                //    print("We already have a potion in hand!");
-                //    UIManager.instance.ErrorSource.Play();
-                //}
-                #endregion
-
-                thrownPotion = false;
-            }
-
-
-
-
-
-            //if (potionLoaded)
-            //{
-            //    if (playerResource.plantMush >= PotionInHand.plantMushCost)
-            //    {
-            //        if (Input.mouseScrollDelta.y > 0f)
-            //        {
-            //            print("overhand");
-            //            InstantiatePotion(true, PotionInHand);
-            //            potionSlot.sprite = empty;
-            //            whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
-            //            whooshSource.Play();
-            //        }
-            //        else if (Input.mouseScrollDelta.y < 0f)
-            //        {
-            //            print("underhand");
-            //            InstantiatePotion(false, PotionInHand);
-            //            potionSlot.sprite = empty;
-            //            whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
-            //            whooshSource.Play();
-            //        }
-            //    }
-            //}
-
-
-            var array = DeliveryBelt.ToArray();
-            for (int i = 0; i < DeliveryBelt.Count; i++)
-            {
-                if (array[i].timer >= 0f)
-                {
-                    array[i].timer -= Time.deltaTime;
-                    array[i].textTimer.GetComponent<Text>().text = array[i].timer.ToString();
-                }
-            }
-        }
-
-
     }
+
 
     /// <summary>
     /// Creates a potion gameobject.  We pass in a bool that indicates whether we are throwing overhand vs underhand.
@@ -385,8 +328,8 @@ public class PotionSystem : MonoBehaviour
     /// <param name="potion"></param>
     void InstantiatePotion(bool overhand, PotionObject potion)
     {
-
-        var pot = Instantiate(this.potion, player.transform.position, Quaternion.Euler(90,0,0)).GetComponent<Potion>();
+        amountOfPotions--;
+        var pot = Instantiate(this.potion, player.transform.position, Quaternion.Euler(90, 0, 0)).GetComponent<Potion>();
         pot.SetStartAndEnd(Crosshair.instance.LimitedCrosshair.position, overhand);
         pot.potion = potion;
         whooshSource.clip = AudioManager.instance.GetRandomSound(AudioManager.instance.Whoosh);
@@ -402,18 +345,18 @@ public class PotionSystem : MonoBehaviour
 
     IEnumerator AnimateMove()
     {
-        
+
 
         // iterate through the queue by converting it to an array
-        var array = DeliveryBelt.ToArray();
+        var array = deliveryBelt.ToArray();
 
         Vector3[] origin = new Vector3[array.Length];
         Vector3[] target = new Vector3[origin.Length];
 
-        for (int i = 0; i < DeliveryBelt.Count; i++)
+        for (int i = 0; i < deliveryBelt.Count; i++)
         {
-            origin[i] = array[i].deliveryBeltTransform.localPosition;
-            target[i] = slots[i].localPosition;
+            //origin[i] = array[i].localPosition;
+            target[i] = deliveryBeltSlots[i].transform.localPosition;
         }
 
 
@@ -436,10 +379,10 @@ public class PotionSystem : MonoBehaviour
 
             for (int i = 0; i < array.Length; i++)
             {
-                if(array[i].deliveryBeltTransform != null)
-                    array[i].deliveryBeltTransform.localPosition = Vector3.LerpUnclamped(origin[i], target[i], curvePercent);
+                //if(array[i].deliveryBeltTransform != null)
+                //    array[i].deliveryBeltTransform.localPosition = Vector3.LerpUnclamped(origin[i], target[i], curvePercent);
             }
-            
+
             // wait a frame
             yield return null;
         }

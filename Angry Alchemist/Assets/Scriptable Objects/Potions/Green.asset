@@ -22,7 +22,7 @@ MonoBehaviour:
   initDamage: {x: 2, y: 3}
   damageOverTime: {x: 1, y: 3}
   duration: 4
-  craftTime: 2
+  craftTime: 1.25
   potionSplash: {fileID: 1432356128850050297, guid: e77091a5c6aebd94fb7f3c589dc58e6d,
     type: 3}
   reticle: {fileID: 21300000, guid: 17bb58184ff2edb4d8f46a7fe73c226b, type: 3}

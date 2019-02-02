@@ -9,7 +9,7 @@ public class Healthbar : MonoBehaviour
 
     private void Start()
     {
-        print(parent.healthUnitInterval);
+        //print(parent.healthUnitInterval);
     }
 
     private void Update()

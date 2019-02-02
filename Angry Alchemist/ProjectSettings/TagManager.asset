@@ -56,14 +56,14 @@ TagManager:
   - name: Mush
     uniqueID: 2877111469
     locked: 0
+  - name: Enemies
+    uniqueID: 3776542299
+    locked: 0
   - name: Blade
     uniqueID: 2884785167
     locked: 0
   - name: Player
     uniqueID: 3798172833
-    locked: 0
-  - name: Enemies
-    uniqueID: 3776542299
     locked: 0
   - name: Projectiles
     uniqueID: 295992237
