@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7502465759630892363}
   - component: {fileID: 6786933502783970134}
   - component: {fileID: 5986766787891876680}
-  - component: {fileID: 7522225638703610068}
   - component: {fileID: 5997594222162775427}
   m_Layer: 8
   m_Name: Rock3D
@@ -195,21 +194,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7522225638703610068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5323021281668342204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 30a8d99ec795a1249b8de5e565e4aa37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mush: 2
-  percent: 5
 --- !u!114 &5997594222162775427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,6 +209,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   health: 0
+  type: 2
+  chopPercent: 6
 --- !u!1 &7973868456476565514
 GameObject:
   m_ObjectHideFlags: 0

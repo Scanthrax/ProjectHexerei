@@ -97,6 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d7826a526d4d54991b81c80d9161db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  source: {fileID: 4649067653523307165}
+  hover: {fileID: 1685866003250655386}
+  rigidBody: {fileID: 2274751736536579420}
 --- !u!135 &3915514273342501586
 SphereCollider:
   m_ObjectHideFlags: 0

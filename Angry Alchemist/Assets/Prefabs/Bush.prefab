@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 6786933502783970134}
   - component: {fileID: 1884135908290840314}
   - component: {fileID: 584795452964173749}
-  - component: {fileID: 8790936047129084241}
   m_Layer: 8
   m_Name: Bush
   m_TagString: Untagged
@@ -113,21 +112,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 12
   health: 0
---- !u!114 &8790936047129084241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5323021281668342204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
-  m_Script: {fileID: 11500000, guid: 30a8d99ec795a1249b8de5e565e4aa37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mush: 1
-  percent: 18
+  type: 1
+  chopPercent: 18
 --- !u!1 &7973868456476565514
 GameObject:
   m_ObjectHideFlags: 0

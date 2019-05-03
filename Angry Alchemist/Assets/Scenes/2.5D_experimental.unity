@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 12
+    serializedVersion: 11
     m_Resolution: 2
     m_BakeResolution: 40
     m_AtlasSize: 1024
@@ -77,8 +77,6 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 512
     m_PVRBounces: 2
-    m_PVREnvironmentSampleCount: 512
-    m_PVREnvironmentReferencePointCount: 2048
     m_PVRFilteringMode: 1
     m_PVRDenoiserTypeDirect: 1
     m_PVRDenoiserTypeIndirect: 1
@@ -86,7 +84,6 @@ LightmapSettings:
     m_PVRFilterTypeDirect: 0
     m_PVRFilterTypeIndirect: 0
     m_PVRFilterTypeAO: 0
-    m_PVREnvironmentMIS: 0
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -2268,6 +2265,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 149
   health: 100
+  type: 0
+  chopPercent: 0
   rageBar: {fileID: 1404930731}
   rage: 0
 --- !u!114 &877307607
@@ -4213,7 +4212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1549869454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4871,6 +4870,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mush: {fileID: 8528293010348765561, guid: 3434d13465569a74ea8aff9ed73ed50b, type: 3}
+  mushSpew: {fileID: 8528293010348765561, guid: e60549d502e9feb4d98153ee9e7be7ba,
+    type: 3}
   plantMush: 99
   mineralMush: 99
   creatureMush: 99
@@ -4888,6 +4889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23917677e3e61294bbfba9bd498cf3da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spewDist: 0
   canvas: {fileID: 770936668}
 --- !u!114 &2075908205
 MonoBehaviour:
@@ -5016,7 +5018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipes:
   - {fileID: 11400000, guid: 0465c202aa02cb34fa51226212f5bb34, type: 2}
-  - {fileID: 11400000, guid: d832c26089a8c494cb84473d1f5990e3, type: 2}
+  - {fileID: 11400000, guid: 3889644f755c0ae40b44ae084bf97aef, type: 2}
   - {fileID: 11400000, guid: 04c9f7b73c8bde54dbf1d69606e11f8e, type: 2}
   - {fileID: 11400000, guid: 43444ddbf15d2bc4aa49e2260912277b, type: 2}
   potionSlot: {fileID: 0}

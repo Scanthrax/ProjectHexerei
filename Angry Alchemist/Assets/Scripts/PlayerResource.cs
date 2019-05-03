@@ -7,6 +7,7 @@ public class PlayerResource : MonoBehaviour
     public static PlayerResource instance;
 
     public GameObject mush;
+    public GameObject mushSpew;
 
     private void Awake()
     {
@@ -30,4 +31,13 @@ public class PlayerResource : MonoBehaviour
     //        UIManager.instance.plantMush.text = plantMush.ToString();
     //    }
     //}
+
+    public static Color GetColor(MushType type)
+    {
+        return type == MushType.Plant ? Color.green :
+            type == MushType.Creature ? Color.yellow :
+            type == MushType.Mineral ? Color.blue :
+            type == MushType.Demon ? Color.red :
+            type == MushType.Null ? Color.gray : Color.black;
+    }
 }

@@ -20,22 +20,36 @@ public class Hover : MonoBehaviour
     /// </summary>
     float startTime;
 
+    public bool isHovering;
+
     private void Start()
     {
         // capture the start time when the object is instantiated
         startTime = Time.time;
+
+        SetHover(true);
     }
 
     void Update()
     {
-        transform.localScale = Vector3.one * (
-            // set the minimum point of the oscillation
-            MinMaxScale.x + (((
-            // find a point along the sin wave by starting from our startTime and incrementing as time goes on.  the time is multiplied by our speedMult variable
-            Mathf.Sin(startTime + (Time.time * speedMult))
-            // offset the wave (-1 to 1) by halving it (-0.5 to 0.5) and moving it up (0 to 1)
-            *0.5f)+0.5f)
-            // find the difference between the minimum scale & maximum scale so the sin wave will oscillate between both values
-            * (MinMaxScale.y - MinMaxScale.x)));
+
+        if (isHovering)
+        {
+            transform.localScale = Vector3.one * (
+                // set the minimum point of the oscillation
+                MinMaxScale.x + (((
+                // find a point along the sin wave by starting from our startTime and incrementing as time goes on.  the time is multiplied by our speedMult variable
+                Mathf.Sin(startTime + (Time.time * speedMult))
+                // offset the wave (-1 to 1) by halving it (-0.5 to 0.5) and moving it up (0 to 1)
+                * 0.5f) + 0.5f)
+                // find the difference between the minimum scale & maximum scale so the sin wave will oscillate between both values
+                * (MinMaxScale.y - MinMaxScale.x)));
+        }
+    }
+
+
+    public void SetHover(bool hover)
+    {
+        isHovering = hover;
     }
 }

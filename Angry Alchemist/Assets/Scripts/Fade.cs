@@ -20,7 +20,12 @@ public class Fade : MonoBehaviour
     {
         renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, newAlpha -= 0.03f);
 
-        if (newAlpha <= 0f)
+
+
+        transform.localScale -= Vector3.one * 0.045f;
+
+        if (newAlpha <= 0f || transform.localScale.x <= 0f)
             Destroy(gameObject);
+
     }
 }

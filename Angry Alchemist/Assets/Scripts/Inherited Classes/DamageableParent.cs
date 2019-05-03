@@ -14,6 +14,8 @@ public class DamageableParent : MonoBehaviour
     [HideInInspector]
     public int health;
 
+    public MushType type;
+    public float chopPercent;
 
     public virtual float healthUnitInterval
     {
@@ -54,7 +56,20 @@ public class DamageableParent : MonoBehaviour
         // reduce the health
         health -= damage;
         // spew the floating combat text
-        Spew.instance.SpewThings(UIManager.instance.combatText, transform.position, 1,damage,Color.yellow);
+        //Spew.instance.SpewThings(UIManager.instance.combatText, transform.position, 1,damage,PlayerResource.GetColor(type));
+
+
+        var spew = Instantiate(PlayerResource.instance.mushSpew, transform.position, Quaternion.Euler(90f, 0, 0)).GetComponent<MushSplatter>();
+        spew.Init(type);
+
+
+        if (Random.value * 100f <= chopPercent)
+        {
+            var temp = Instantiate(PlayerResource.instance.mush, transform.position, Quaternion.Euler(90f, 0, 0)).GetComponent<Mush>();
+            temp.Init(type);
+            temp.Spew(1200f);
+        }
+
 
         CheckForDeath();
     }
